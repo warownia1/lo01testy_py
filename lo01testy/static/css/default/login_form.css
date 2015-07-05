@@ -1,0 +1,115 @@
+body {
+	background: #343;
+	/*
+	background: -moz-linear-gradient(top,  #343 0%, #353 100%); 
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#343), color-stop(100%,#353));
+	background: -webkit-linear-gradient(top,  #343 0%,#353 100%);
+	background: -o-linear-gradient(top,  #020 0%,#353 100%);
+	background: -ms-linear-gradient(top,  #020 0%,#130 100%);
+	*/
+	background: linear-gradient(to bottom,  #010 0%,#120 100%);
+	background-attachment: fixed;
+}
+
+.content-box {
+	display: block;
+	width: 400px;
+	margin: 0em auto;
+	padding: 30px;
+	font-weight: normal;
+	font-family: "Century Gothic";
+}
+
+.content-box--skin {
+	background-color: #EEE;
+	color: #070;
+}
+
+.form-header {
+	margin: 0px;
+	padding: 0px;
+	width: auto;
+	display: block;
+	text-align: center;
+	font-size: 34px;
+}
+
+.form-header--skin {
+}
+
+.form-box {
+	margin: 15px 0;
+}
+
+.field-wrapper {
+	display: block;
+	width: auto;
+	margin: 0px 0px;
+	padding: 10px 50px;
+}
+
+.field-wrapper input {
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	padding: 10px 10px;
+	border: solid 1px #BBB;
+	font-family: inherit;
+}
+
+.field-wrapper .errorlist {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	font-size: 12px;
+}
+
+input:focus, a:focus {
+    outline-color: #0F0;
+}
+
+.submit-wrapper input {
+	cursor: pointer;
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	margin: 10px 0;
+	padding: 12px 10px;
+	text-align: center;
+	font-family: inherit;
+	font-size: 20px;
+}
+
+.submit-wrapper--skin input{
+	background-color: #070;
+	color: #EFE;
+	border: none;
+}
+
+.submit-wrapper--skin input:focus{
+	box-shadow: 0 0 5px #0F0;
+	background-color: #180;
+	transition-duration: 0.1s;
+}
+
+.submit-wrapper--skin input:hover{
+	background-color: #3A1;
+	transition: background-color 0.1s;
+}
+
+.link-button {
+	cursor: pointer;
+	display: block;
+	box-sizing: border-box;
+	margin: 10px 0 0 0;
+	padding: 12px 10px;
+	text-align: center;
+	text-decoration: none;
+	color: inherit;
+}
+
+.link-button--skin {
+	border: 1px solid #888;
+	color: #222;
+	font-size: 16px;
+}

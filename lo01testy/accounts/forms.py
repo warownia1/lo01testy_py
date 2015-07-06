@@ -84,7 +84,7 @@ class RegisterForm(forms.Form):
         
     def clean_code(self):
         code = self.cleaned_data.get('code')
-        if not RegisterCode.objects.filter(code=code).exist():
+        if not RegisterCode.objects.filter(code=code).exists():
             raise forms.ValidationError(
                 "Niewłaściwy kod",
                 code='invalid_code'

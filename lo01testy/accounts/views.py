@@ -7,7 +7,10 @@ from .forms import LoginForm, RegisterForm
 
 
 
-def login_user(request):
+def login_user(request, username=None):
+    if username:
+        form = LoginForm(initial={'username': username})
+        return render(request, 'registration/login_form.html', {"form": form})
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -32,7 +35,7 @@ def register_user(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            return HttpResponse("valid registration form")
+            return redirect('login', username=form.cleaned_data.get('username'))
     else:
         form = RegisterForm()
     return render(request, 'registration/register_form.html', {"form": form})

@@ -21,6 +21,6 @@ import accounts.views
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^tmp/', tmp.views.index),
-    url(r'^login/', accounts.views.login_user, name='login'),
+    url(r'^login/(?:(?P<username>\w+)/)?$', accounts.views.login_user, name='login'),
     url(r'^register/', accounts.views.register_user, name='registration'),
 ]

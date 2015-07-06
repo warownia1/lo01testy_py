@@ -93,7 +93,7 @@ input:focus, a:focus {
 }
 
 .submit-wrapper--skin input:hover{
-	background-color: #3A1;
+	background-color: #291;
 	transition: background-color 0.1s;
 }
 
@@ -111,5 +111,11 @@ input:focus, a:focus {
 .link-button--skin {
 	border: 1px solid #888;
 	color: #222;
+	background-color: #EEE;
 	font-size: 16px;
+}
+
+.link-button--skin:hover {
+	background-color: #FFF;
+	transition: background-color 0.1s;
 }

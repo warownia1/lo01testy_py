@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.forms import ValidationError
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm
-from pprint import pprint
+
+from .forms import LoginForm, RegisterForm
+
 
 
 def login_user(request):
@@ -27,5 +29,12 @@ def login_user(request):
     return render(request, 'registration/login_form.html', {"form": form})
 
 def register_user(request):
-    return
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            return HttpResponse("valid registration form")
+    else:
+        form = RegisterForm()
+    return render(request, 'registration/register_form.html', {"form": form})
+        
     

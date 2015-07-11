@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+	width="300" height="300" viewBox="-50 -50 100 100">
+	<style>
+	.circle {
+		stroke: #000; 
+		stroke-width: 20px;
+		fill: none;
+	}
+	.grid {
+		stroke: #000;
+		stroke-width: 5px;
+		stroke-linejoin: round;
+		fill: #000;
+	}
+	</style>
+		<circle class="circle" r="23" cx="0" cy="0" mask="url(#hole)"/>
+		<path class="grid" d="M-10,-30 v-10 a40,40 0 0 1 20,0 v10 z" />
+		<path class="grid" d="M10,30 v10 a40,40 0 0 1 -20,0 v-10 z" />
+		<g transform="rotate(60 0 0)">
+		<path class="grid" d="M-10,-30 v-10 a40,40 0 0 1 20,0 v10 z" />
+		<path class="grid" d="M10,30 v10 a40,40 0 0 1 -20,0 v-10 z" />
+		</g>
+		<g transform="rotate(120 0 0)">
+		<path class="grid" d="M-10,-30 v-10 a40,40 0 0 1 20,0 v10 z" />
+		<path class="grid" d="M10,30 v10 a40,40 0 0 1 -20,0 v-10 z" />
+		</g>
+</svg>

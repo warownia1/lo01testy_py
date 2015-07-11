@@ -1,0 +1,25 @@
+body {
+	background-attachment: fixed;
+	font-weight: normal;
+	font-family: "Century Gothic";
+	margin: 0;
+}
+
+.global--skin {
+	background-color: #020;
+	color: #FFF;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+	margin: 0;
+}
+
+.visually-hidden {
+	height: 0;
+	width: 0;
+	margin: 0;
+	padding: 0;
+	display: block;
+	overflow: hidden;
+}

@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 
+{% load staticfiles %}
+
 <html>
 <head>
-	<link rel='stylesheet' type='text/css' href='/static/css/default/register_form.css' />
-	<link rel='stylesheet' type='text/css' href='/static/css/default/generic.css' />
+	<meta charset="utf-8" />
+	<link rel='stylesheet' type='text/css' href="{% static 'css/default/register_form.css' %}" />
+	<link rel='stylesheet' type='text/css' href="{% static 'css/default/generic.css' %}" />
 </head>
-<body>
-<div class="content-box content-box--skin">
-	<header class="form-header form-header--skin">
+<body class='global--skin'>
+<section class="content-box content-box--skin">
+	<h1 class="form-header form-header--skin">
 	Rejestracja
-	</header>
+	</h1>
 	<form class="register__form" action="/register/" method='POST'>
 	{% csrf_token %}
 	<div class='form-box'>
@@ -26,6 +29,6 @@
 	</div>
 	</form>
 	<a class="link-button link-button--skin" href="{% url 'login' %}">Powrót</a>
-</div>
+</section>
 </body>
 </html>

@@ -25,7 +25,7 @@ SECRET_KEY = '7==9mg5@1eq+f4$!g-auizk__tmt0vfkdp7t4!6m-*d)n#(8wv'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", 'localhost']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
+    'examination',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -94,7 +95,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pl-pl'
 
 TIME_ZONE = 'CET'
 
@@ -117,4 +118,4 @@ STATICFILES_DIRS = (
 
 # Login page redirect for unautorised users
 
-LOGIN_URL = '/accounts/login/'
+LOGIN_URL = '/login/'

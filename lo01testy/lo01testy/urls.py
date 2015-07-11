@@ -17,10 +17,15 @@ from django.conf.urls import include, url
 from django.contrib import admin
 import tmp.views
 import accounts.views
+import examination.views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^tmp/', tmp.views.index),
-    url(r'^login/(?:(?P<username>\w+)/)?$', accounts.views.login_user, name='login'),
-    url(r'^register/', accounts.views.register_user, name='registration'),
+    url(r'^tmp/$', tmp.views.index),
+    url(r'^login/(?:(?P<username>[\w+\-\.@]+)/)?$', accounts.views.login_user, name='login'),
+    url(r'^register/$', accounts.views.register_user, name='registration'),
+    url(r'^logout/$', accounts.views.logout_user, name='logout'),
+    url(r'^user/id/(?P<id>[0-9]+)/$', accounts.views.show_user, name='show_user'),
+    url(r'^user/(?:(?P<username>[\w+\-\.@]+)/)?$', accounts.views.show_user, name='show_user'),
+    url(r'^exam/list/$', examination.views.exams_list, name="exams_list"),
 ]

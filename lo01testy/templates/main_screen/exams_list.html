@@ -1,0 +1,15 @@
+{% extends "main_screen\main_screen_base.html" %}
+
+{% load staticfiles %}
+
+{% block header %}
+	Lista Testów
+{% endblock %}
+
+{% block content %}
+	{% for exam in exams %}
+		<p>
+		{{ exam.name }} -- {{ exam.closest_due_date|date:"d E Y" }}
+		</p>
+	{% endfor %}
+{% endblock %}

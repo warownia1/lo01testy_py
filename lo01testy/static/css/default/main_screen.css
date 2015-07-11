@@ -1,0 +1,29 @@
+.top-title-bar {
+	padding: 20px 50px;
+}
+
+.top-title-bat--skin {
+	background-color: #020;
+}
+
+.top-title-bar h1 {
+	font-size: 1.5em;
+}
+
+.main-container {
+	padding: 20px 50px;
+}
+
+.main-container--skin {
+	background-color: #EEE;
+	color: #070;
+}
+
+.section {
+	padding: 20px 0;
+	border-bottom: 1px solid;
+}
+
+.section--skin {
+	border-color: #C0E0C0;
+}

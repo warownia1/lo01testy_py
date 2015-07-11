@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from django.utils.html import escape
 from django.contrib.auth.models import User
@@ -23,12 +25,15 @@ class LoginForm(forms.Form):
             "max_length": "maksymalna ilość znamów: 50",
         }
     )
+    
+    # def clean_username(self):
+        # return escape(username = self.cleaned_data.get('username'))
 
     
 class RegisterForm(forms.Form):
     username = forms.CharField(
         label="Nazwa użytkownika",
-        min_length=3,
+        min_length=1,
         max_length=30,
         error_messages={
             "required": "To pole jest wymagane",
@@ -63,7 +68,11 @@ class RegisterForm(forms.Form):
     
     def clean_username(self):
         username = self.cleaned_data.get('username')
-        username = escape(username)
+        if re.search(r'[^\w@\.\-+]', username):
+            raise forms.ValidationError(
+                "Nazwa użytkownika zawiera niedozwolone znaki",
+                code='illegal_char'
+            )
         if User.objects.filter(username=username).exists():
             raise forms.ValidationError(
                 "Uzytkownik już istnieje",
@@ -80,7 +89,7 @@ class RegisterForm(forms.Form):
                 'Hasła są różne',
                 code='pass_not_match'
             )
-        return password2
+        return password
         
     def clean_code(self):
         code = self.cleaned_data.get('code')

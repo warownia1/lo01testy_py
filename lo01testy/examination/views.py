@@ -2,7 +2,7 @@ import datetime
 from pprint import pprint
 
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Min, Max
 
@@ -37,10 +37,12 @@ def exams_list(request):
     
     return render(request, 'main_screen/exams_list.html', 
         {"exams": exams, "old_exams": old_exams})
-      
+
+@login_required        
 def show_exam(request, id):
-    exam = Exam.objects.prefetch_related('assign_set'
-        ).prefetch_related('assign_set__group').get(id=id)
+    queryset = Exam.objects.prefetch_related('assign_set'
+        ).prefetch_related('assign_set__group')
+    exam = get_object_or_404(queryset, id=id)
     assigns = exam.assign_set.order_by('-due_date').all()
     return render(request, 'main_screen/show_exam.html', 
         {"exam": exam, "assigns": assigns})

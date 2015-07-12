@@ -28,4 +28,5 @@ urlpatterns = [
     url(r'^user/id/(?P<id>[0-9]+)/$', accounts.views.show_user, name='show_user'),
     url(r'^user/(?:(?P<username>[\w+\-\.@]+)/)?$', accounts.views.show_user, name='show_user'),
     url(r'^exam/list/$', examination.views.exams_list, name="exams_list"),
+    url(r'^exam/id/(?P<id>[0-9]+)/$', examination.views.show_exam, name='show_exam'),
 ]

@@ -1,0 +1,22 @@
+{% extends "main_screen\main_screen_base.html" %}
+
+{% load staticfiles %}
+
+{% block header %}
+	Test #{{ exam.id }}
+{% endblock %}
+
+{% block content %}
+	<section class="section section--skin">
+	<h1>
+	{{ exam.name }}
+	</h1>
+	{% for assign in assigns %}
+	<p>
+		{{ assign.group.name }} &ndash; {{ assign.due_date|date:"d E Y" }}
+	</p>
+	{% empty %}
+		<p>Ten test nie jest przypisany do żadnej grupy, do której należysz</p>
+	{% endfor %}
+	</section>
+{% endblock %}

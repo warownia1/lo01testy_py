@@ -7,9 +7,26 @@
 {% endblock %}
 
 {% block content %}
+	<section class="section section--skin">
+	<h1>
+	Nadchodzące testy
+	</h1>
 	{% for exam in exams %}
 		<p>
-		{{ exam.name }} -- {{ exam.closest_due_date|date:"d E Y" }}
+		<a href="{% url 'show_exam' exam.id %}">
+		{{ exam.name }} &ndash; {{ exam.closest_due_date|date:"d E Y" }}
+		</a>
 		</p>
 	{% endfor %}
+	</section>
+	<section class="section section--skin">
+	<h2>
+	Ubiegłe testy
+	</h2>
+	{% for exam in old_exams %}
+		<p>
+		{{ exam.name }} &ndash; {{ exam.closest_due_date|date:"d E Y" }}
+		</p>
+	{% endfor %}
+	</section>
 {% endblock %}

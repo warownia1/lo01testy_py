@@ -1,0 +1,27 @@
+.button-box {
+	display: flex;
+	flex-direction: column;
+	width: 200px;
+}
+
+.link-button {
+	cursor: pointer;
+	display: block;
+	margin: 5px 0;
+	box-sizing: border-box;
+	padding: 10px 10px;
+	text-align: center;
+	text-decoration: none;
+	color: inherit;
+}
+
+.link-button--skin {
+	background-color: #070;
+	color: #EEE;
+	transition: background-color 0.10s;
+}
+
+.link-button--skin:hover {
+	background-color: #291;
+	color: #FFF;
+}

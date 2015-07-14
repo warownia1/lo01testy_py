@@ -24,4 +24,9 @@ class Assign(models.Model):
     group = models.ForeignKey(Group)
     due_date = models.DateField(editable=True)
     creation_date = models.DateField(auto_now_add=True)
+    
+class ExamCode(models.Model):
+    exam = models.ForeignKey(Exam)
+    code = models.CharField(max_length=10)
+    expiry_date = models.DateTimeField()
   

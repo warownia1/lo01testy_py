@@ -13,7 +13,7 @@
 	</h1>
 	{% for exam in exams %}
 		<p>
-		<a href="{% url 'show_exam' exam.id %}">
+		<a href="{% url 'exam:show' exam.id %}">
 		{{ exam.name }} &ndash; {{ exam.closest_due_date|date:"d E Y" }}
 		</a>
 		</p>

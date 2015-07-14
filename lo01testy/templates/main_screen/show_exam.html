@@ -2,6 +2,10 @@
 
 {% load staticfiles %}
 
+{% block includes %}
+<link rel='stylesheet' type='text/css' href="{% static 'css/default/show_exam.css' %}" />
+{% endblock %}
+
 {% block header %}
 	Test #{{ exam.id }}
 {% endblock %}
@@ -18,5 +22,15 @@
 	{% empty %}
 		<p>Ten test nie jest przypisany do żadnej grupy, do której należysz</p>
 	{% endfor %}
+	{% if assigns %}
+	<div class='button-box button-box--skin'>
+		<div>
+		<a class='link-button link-button--skin' href="{% url 'exam:start' exam.id %}">Rozpocznij test</a>
+		</div>
+		<div>
+		<a class='link-button link-button--skin' href=''>Trening</a>
+		</div>
+	</div>
+	{% endif %}
 	</section>
 {% endblock %}

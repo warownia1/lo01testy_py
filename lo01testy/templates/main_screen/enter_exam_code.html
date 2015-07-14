@@ -1,0 +1,23 @@
+{% extends "main_screen\main_screen_base.html" %}
+
+{% load staticfiles %}
+
+{% block includes %}
+{% endblock %}
+
+{% block header %}
+	Rozpocznij test #{{ exam.id }}
+{% endblock %}
+
+{% block content %}
+	<section class="section section--skin">
+	<h1>
+	Wprowadź kod dla egzaminu: {{ exam.name }}
+	</h1>
+	<form action method="POST">
+	{% csrf_token %}
+	{{ form }}
+	<input type='submit' value='Potwierdź' />
+	</form>
+	</section>
+{% endblock %}

@@ -17,9 +17,12 @@ from django.conf.urls import include, url
 from django.contrib import admin
 import tmp.views
 import accounts.views
-import examination.views
+import examination.urls
+
+# from .admin import admin_site
 
 urlpatterns = [
+    # url(r'^myadmin/', include(admin_site.urls)),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^tmp/$', tmp.views.index),
     url(r'^login/(?:(?P<username>[\w+\-\.@]+)/)?$', accounts.views.login_user, name='login'),
@@ -27,6 +30,5 @@ urlpatterns = [
     url(r'^logout/$', accounts.views.logout_user, name='logout'),
     url(r'^user/id/(?P<id>[0-9]+)/$', accounts.views.show_user, name='show_user'),
     url(r'^user/(?:(?P<username>[\w+\-\.@]+)/)?$', accounts.views.show_user, name='show_user'),
-    url(r'^exam/list/$', examination.views.exams_list, name="exams_list"),
-    url(r'^exam/id/(?P<id>[0-9]+)/$', examination.views.show_exam, name='show_exam'),
+    url(r'^exam/', include(examination.urls, namespace='exam')),
 ]

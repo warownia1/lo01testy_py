@@ -4,7 +4,7 @@ from django import forms
 from django.utils.html import escape
 from django.contrib.auth.models import User
 
-from accounts.models import RegisterCode
+from .models import RegisterCode
 
 
 class LoginForm(forms.Form):
@@ -25,9 +25,6 @@ class LoginForm(forms.Form):
             "max_length": "maksymalna ilość znamów: 50",
         }
     )
-    
-    # def clean_username(self):
-        # return escape(username = self.cleaned_data.get('username'))
 
     
 class RegisterForm(forms.Form):

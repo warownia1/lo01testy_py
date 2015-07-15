@@ -35,6 +35,7 @@ def login_user(request, username=None):
     return render(request, 'registration/login_form.html', {"form": form})
     
 def logout_user(request):
+    request.session.flush()
     logout(request)
     return redirect('login')
 

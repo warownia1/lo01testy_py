@@ -25,15 +25,24 @@
 	font-family: inherit;
 }
 
-.search-input-box .icon-wrapper {
+.search-input-box .icon-box {
+	display: table;
 	position: absolute;
-	height: 25px;
-	width: 25px;
+	height: 40px;
+	width: 40px;
 	top: 50%;
-	left: 7px;
+	left: 0;
 	transform: translateY(-50%);
 }
-.search-input-box img {
+
+.search-input-box .icon-wrapper {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.search-input-box .icon-wrapper img {
 	height: 25px;
 	width: auto;
+	display: block;
+	margin: auto;
 }

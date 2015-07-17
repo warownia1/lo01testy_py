@@ -1,0 +1,46 @@
+.field-wrapper {
+	display: block;
+	width: auto;
+	margin: 10px 0px;
+	padding: 0px 0px;
+}
+
+.field-wrapper .errorlist {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	font-size: 12px;
+}
+
+.field-wrapper label{
+	display: block;
+}
+
+.wide-button-wrapper {
+	display: flex;
+}
+
+.button {
+	cursor: pointer;
+	display: block;
+	margin: 5px 0;
+	box-sizing: border-box;
+	padding: 10px 20px;
+	border: 0;
+	text-align: center;
+	text-decoration: none;
+	font-size: inherit;
+	font-family: inherit;
+	color: inherit;
+}
+
+.button--skin {
+	background-color: #070;
+	color: #EEE;
+	transition: background-color 0.10s;
+}
+
+.button--skin:hover {
+	background-color: #291;
+	color: #FFF;
+}

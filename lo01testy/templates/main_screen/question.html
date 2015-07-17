@@ -7,15 +7,18 @@
 {% endblock %}
 
 {% block header %}
-	Rozpocznij test #{{ exam.id }}
+{{ exam.name }}
 {% endblock %}
 
 {% block content %}
 <section class="section section--skin">
 	<h1>
-	Wprowadź kod dla egzaminu: {{ exam.name }}
+	Pytanie {{ exam.current_question|add:'1' }}/{{ exam.num_questions }}
 	</h1>
-	<form action method="POST">
+	<p>
+	{{ question.text }}
+	</p>
+	<form action method='POST'>
 	{% csrf_token %}
 	{% for field in form %}
 	<div class="field-wrapper">
@@ -24,7 +27,7 @@
 		{{ field }}
 	</div>
 	{% endfor %}
-	<input class='button button--skin' type='submit' value='Potwierdź' />
+	<input class='button button--skin' type='submit' value='Wyślij' />
 	</form>
 </section>
 {% endblock %}

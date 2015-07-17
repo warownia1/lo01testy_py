@@ -15,6 +15,11 @@ class AssignInline(admin.TabularInline):
     extra = 1
 
 
+class GroupAdmin(admin.ModelAdmin):
+    filter_horizontal = ('members',)
+    inlines = (AssignInline,)
+
+
 class ExamCodeInline(admin.TabularInline):
     model = ExamCode
     fieldsets = (
@@ -25,17 +30,22 @@ class ExamCodeInline(admin.TabularInline):
     extra = 1
 
 
-class GroupAdmin(admin.ModelAdmin):
-    filter_horizontal = ('members',)
-    inlines = (AssignInline,)
-
-
 class ExamAdmin(admin.ModelAdmin):
     inlines = (ExamCodeInline, )
+    
+    
+class AnswerInline(admin.TabularInline):
+    model = Answer
+    extra = 4
+    
+  
+class QuestionAdmin(admin.ModelAdmin):
+    inlines = (AnswerInline,)
 
 
 admin.site.register(Exam, ExamAdmin)
 admin.site.register(Group, GroupAdmin)
+admin.site.register(Question, QuestionAdmin)
 
 # admin_site.register(Exam)
 # admin_site.register(Group, GroupAdmin)

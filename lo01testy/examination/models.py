@@ -73,3 +73,21 @@ class Answer(models.Model):
             return "Q{}: {}...".format(self.question_id, self.text[:50])
         else:
             return "Q{}: {}".format(self.question_id, self.text)
+            
+            
+class ExamRegister(models.Model):
+    user = models.ForeignKey(User)
+    exam = models.ForeignKey(Exam)
+    date = models.DateField(auto_now_add=True)
+    user_rating = models.IntegerField()
+    
+    def __str__(self):
+        return "{} - {} - {}".format(
+            self.date, self.exam.name, self.user.username)
+    
+    
+class AnswerRegister(models.Model):
+    exam_attempt = models.ForeignKey(ExamRegister)
+    question = models.ForeignKey(Question)
+    answer = models.CharField(max_length=25)
+    graded = models.BooleanField(default=False)

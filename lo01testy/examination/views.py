@@ -7,7 +7,7 @@ from django.db.models import Min, Max
 
 from .models import *
 from .forms import ExamCodeForm, AnswerForm
-from .exam_builder import ExamBuilder
+from .utils import ExamBuilder, ExamFinalizer
 
 
 @login_required
@@ -99,6 +99,8 @@ def question(request):
                 'question_type': question.type,
                 'answer': form.cleaned_data['answer']
             }
+            # Consider making changes on local exam objects and then copy it
+            # back to session.
             request.session['exam']['answers'].append(answer)
             request.session['exam']['current_question'] += 1
             request.session.modified = True
@@ -107,7 +109,12 @@ def question(request):
                 return redirect('exam:question')
             else:
                 request.session['exam']['finished'] = True
-                return HttpResponse('exam finished')
+                ef = ExamFinalizer(
+                    request.user, exam['id'], exam['questions'],
+                    request.session['exam']['answers'], exam['practise'])
+                ef.save_exam()
+                rating_change = ef.adjust_rating()
+                return redirect('exam:show_results')
     else:
         form = AnswerForm(question.type, answers_list)
 
@@ -122,6 +129,6 @@ def question(request):
 
 
 @login_required
-def exam_result(request):
-    return
+def show_results(request):
+    return HttpResponse()
 

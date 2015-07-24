@@ -27,7 +27,7 @@ def login_user(request, username=None):
             else:
                 error = ValidationError(
                     "Nieprawidłowy login lub hasło",
-                    code='incorrect_login'
+                    code='incorrect_credentials'
                 )
                 form.add_error('username', error)
     else:

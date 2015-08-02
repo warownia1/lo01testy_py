@@ -30,3 +30,15 @@ a {
 	display: block;
 	overflow: hidden;
 }
+
+.red {
+	color: #E00;
+}
+
+.blue {
+	color: #00E;
+}
+
+.green {
+	color: #0A0;
+}

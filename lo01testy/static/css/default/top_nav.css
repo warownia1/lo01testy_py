@@ -11,8 +11,7 @@
 
 .top-nav > li {
 	display: block;
-	min-width: 120px;
-	flex: 0 1 120px;
+	flex: 0 1 auto;
 	font-size: 17px;
 	border-right: 1px solid #040;
 }
@@ -28,8 +27,7 @@
 .top-nav > li > a {
 	display: block;
 	box-sizing: border-box;
-	padding: 10px 25px;
-	min-width: 120px;
+	padding: 10px 30px;
 	line-height: 40px;
 	text-align: center;
 	text-decoration: none;

@@ -1,4 +1,5 @@
 import datetime
+import urllib.parse
 
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -114,7 +115,12 @@ def question(request):
                     request.session['exam']['answers'], exam['practise'])
                 ef.save_exam()
                 rating_change = ef.adjust_rating()
-                return redirect('exam:show_results')
+                redir =  redirect('exam:show_results')
+                get_request = "?%s" % urllib.parse.urlencode(
+                    {"change": rating_change})
+                redir['Location'] += "?{}".format(
+                    urllib.parse.urlencode({"change": rating_change}))
+                return redir
     else:
         form = AnswerForm(question.type, answers_list)
 
@@ -130,5 +136,15 @@ def question(request):
 
 @login_required
 def show_results(request):
-    return HttpResponse()
+    rating_change = request.GET.get("change")
+    if rating_change is None:
+        rating_change = 0
+    rating = request.user.student.rating
+    return render(
+        request, 'main_screen/result_screen.html',
+        {
+            'change': int(rating_change),
+            'rating': rating
+        }
+    )
 

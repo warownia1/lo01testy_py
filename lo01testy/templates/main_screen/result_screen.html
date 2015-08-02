@@ -1,0 +1,28 @@
+{% extends "main_screen\main_screen_base.html" %}
+
+{% load staticfiles %}
+
+{% block includes %}
+{% endblock %}
+
+{% block header %}
+	Wynik
+{% endblock %}
+
+{% block content %}
+	<section class="section section--skin">
+	<h1>
+		Twój wynik: {{ rating }}
+	</h1>
+	<p>
+		Twój wynik 
+		{% if change > 0 %}
+			wzrósł o {{ change }}
+		{% elif change < 0 %}
+			spadł o <span class="red">{{ change }}</span>
+		{% else %}
+			nie zmienił się
+		{% endif %}
+	</p>
+	</section>
+{% endblock %}

@@ -23,6 +23,7 @@ import examination.urls
 urlpatterns = [
     # url(r'^myadmin/', include(admin_site.urls)),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', accounts.views.index, name="index"),
     url(r'^login/(?:(?P<username>[\w+\-\.@]+)/)?$', accounts.views.login_user, name='login'),
     url(r'^register/$', accounts.views.register_user, name='registration'),
     url(r'^logout/$', accounts.views.logout_user, name='logout'),

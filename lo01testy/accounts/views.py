@@ -9,6 +9,11 @@ from .forms import LoginForm, RegisterForm
 from .models import Student, RegisterCode
 
 
+def index(request):
+    if request.user.is_authenticated():
+        return redirect('show_user')
+    else:
+        return redirect('login')
 
 def login_user(request, username=None):
     if username:

@@ -115,11 +115,11 @@ def question(request):
                     request.session['exam']['answers'], exam['practise'])
                 ef.save_exam()
                 rating_change = ef.adjust_rating()
+
                 redir =  redirect('exam:show_results')
-                get_request = "?%s" % urllib.parse.urlencode(
-                    {"change": rating_change})
                 redir['Location'] += "?{}".format(
-                    urllib.parse.urlencode({"change": rating_change}))
+                    urllib.parse.urlencode({"change": rating_change})
+                )
                 return redir
     else:
         form = AnswerForm(question.type, answers_list)

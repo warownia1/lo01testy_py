@@ -105,7 +105,9 @@ class ScoreCalculator:
 
         elif question.type == QuestionType.open_ended:
             return 1
-            raise NotImplementedError('Open ended question score cannot be calculated')
+            raise NotImplementedError(
+                'Open ended question score cannot be calculated'
+            )
 
         else:
             raise ValueError('Invalid question type {}'.format(question))
@@ -162,11 +164,11 @@ class ExamFinalizer:
         return
 
     def adjust_rating(self):
-        old_rating = self.user.student.rating
-        rating_change = 0
+        total_rating_change = 0
         for raw_answer in self.answers:
             question = self.questions_queryset.get(
-                id=raw_answer['question_id'])
+                id=raw_answer['question_id']
+            )
             if question.type == QuestionType.single_choice:
                 answer = int(raw_answer['answer'])
             elif question.type == QuestionType.multiple_choice:
@@ -178,11 +180,13 @@ class ExamFinalizer:
                 self.user.student.rating,
                 question.rating
             )
-            print((score, expected_score))
-            rating_change += self.calculator.get_rating_change(
-                score, expected_score)
-        rating_change = round(rating_change)
-        self.user.student.rating += rating_change
+            rating_change = self.calculator.get_rating_change(
+                score, expected_score
+            )
+            total_rating_change += rating_change
+            question.rating -= int(round(rating_change))
+            question.save()
+        rounded_total_change = int(round(total_rating_change))
+        self.user.student.rating += rounded_total_change
         self.user.student.save()
-        return rating_change
-
+        return rounded_total_change

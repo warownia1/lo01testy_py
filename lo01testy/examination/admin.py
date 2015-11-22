@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from .models import *
-from lo01testy.admin import admin_site
 
 
 class AssignInline(admin.TabularInline):
@@ -59,6 +58,3 @@ admin.site.register(Exam, ExamAdmin)
 admin.site.register(Group, GroupAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(ExamRegister, ExamRegisterAdmin)
-
-# admin_site.register(Exam)
-# admin_site.register(Group, GroupAdmin)

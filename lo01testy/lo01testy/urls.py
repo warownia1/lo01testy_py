@@ -16,18 +16,29 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 import accounts.views
-import examination.urls
+import examination.views
 
-# from .admin import admin_site
 
-urlpatterns = [
-    # url(r'^myadmin/', include(admin_site.urls)),
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', accounts.views.index, name="index"),
+exam_urlpatterns = [
+    url(r'^list/$', examination.views.exams_list, name="list"),
+    url(r'^overview/(?P<id>[0-9]+)/$', examination.views.exam_overview, name='overview'),
+    url(r'^init/(?P<id>[0-9]+)/$', examination.views.init_exam, name='init'),
+    url(r'^question/$', examination.views.question, name='question'),
+    url(r'^result/$', examination.views.final_result, name='show_results'),
+]
+
+accounts_urlpatterns = [
     url(r'^login/(?:(?P<username>[\w+\-\.@]+)/)?$', accounts.views.login_user, name='login'),
     url(r'^register/$', accounts.views.register_user, name='registration'),
     url(r'^logout/$', accounts.views.logout_user, name='logout'),
-    url(r'^user/id/(?P<id>[0-9]+)/$', accounts.views.show_user, name='show_user'),
-    url(r'^user/(?:(?P<username>[\w+\-\.@]+)/)?$', accounts.views.show_user, name='show_user'),
-    url(r'^exam/', include(examination.urls, namespace='exam')),
+    url(r'^user/id/(?P<id>[0-9]+)/$', accounts.views.user_profile, name='user_profile'),
+    url(r'^user/(?:(?P<username>[\w+\-\.@]+)/)?$', accounts.views.user_profile, name='user_profile'),
+]
+
+urlpatterns = [
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', accounts.views.index, name="index"),
+
+    url(r'^accounts/', include(accounts_urlpatterns, namespace='accounts')),
+    url(r'^exam/', include(exam_urlpatterns, namespace='exam')),
 ]

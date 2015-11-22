@@ -13,7 +13,7 @@
 	<h1 class="form-header form-header--skin">
 	Rejestracja
 	</h1>
-	<form class="register__form" action="/register/" method='POST'>
+	<form class="register__form" action="{% url 'accounts:registration' %}" method='POST'>
 	{% csrf_token %}
 	<div class='form-box'>
 	{% for field in form %}
@@ -28,7 +28,7 @@
 		<input type="submit" value="Utwórz konto" />
 	</div>
 	</form>
-	<a class="link-button link-button--skin" href="{% url 'login' %}">Powrót</a>
+	<a class="link-button link-button--skin" href="{% url 'accounts:login' %}">Powrót</a>
 </section>
 </body>
 </html>

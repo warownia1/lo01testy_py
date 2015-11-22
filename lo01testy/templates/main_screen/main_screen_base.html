@@ -16,7 +16,7 @@
 	<nav class="top-nav-box">
 		<ul class="top-nav top-nav--skin">
 		<li>
-		<a href="{% url 'show_user' %}">Home</a>
+		<a href="{% url 'accounts:user_profile' %}">Home</a>
 		</li>
 		<li>
 		<a href="{% url 'exam:list' %}">Testy</a>
@@ -39,7 +39,7 @@
 		</a>
 		</li>
 		<li>
-		<a href="{% url 'logout' %}">
+		<a href="{% url 'accounts:logout' %}">
 			<svg class="icon-image icon-image--skin logout-icon" viewBox="-50,-50 100,100">
 				<path d="M 20,15 a 30,30 0 1 1 0,-30" /> 
 				<path d="M 0,0 h 35" />

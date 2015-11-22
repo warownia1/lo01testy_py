@@ -40,18 +40,18 @@ def exams_list(request):
 
 
 @login_required
-def show_exam(request, id):
+def exam_overview(request, id):
     queryset = Exam.objects.prefetch_related(
         'assign_set'
     ).prefetch_related('assign_set__group')
     exam = get_object_or_404(queryset, id=id)
     assigns = exam.assign_set.order_by('-due_date').all()
-    return render(request, 'main_screen/show_exam.html',
+    return render(request, 'main_screen/exam_overview.html',
                   {"exam": exam, "assigns": assigns})
 
 
 @login_required
-def start_exam(request, id):
+def init_exam(request, id):
     if request.method == 'POST':
         form = ExamCodeForm(request.POST)
         form.exam_id = id
@@ -135,7 +135,7 @@ def question(request):
 
 
 @login_required
-def show_results(request):
+def final_result(request):
     rating_change = request.GET.get("change")
     if rating_change is None:
         rating_change = 0

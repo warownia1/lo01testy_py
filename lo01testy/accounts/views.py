@@ -11,9 +11,9 @@ from .models import Student, RegisterCode
 
 def index(request):
     if request.user.is_authenticated():
-        return redirect('show_user')
+        return redirect('accounts:user_profile')
     else:
-        return redirect('login')
+        return redirect('accounts:login')
 
 def login_user(request, username=None):
     if username:
@@ -28,7 +28,7 @@ def login_user(request, username=None):
             )
             if (user is not None) and (user.is_active):
                 login(request, user)
-                return redirect('show_user')
+                return redirect('accounts:user_profile')
             else:
                 error = ValidationError(
                     "Nieprawidłowy login lub hasło",
@@ -42,7 +42,7 @@ def login_user(request, username=None):
 def logout_user(request):
     request.session.flush()
     logout(request)
-    return redirect('login')
+    return redirect('accounts:login')
 
 def register_user(request):
     if request.method == 'POST':
@@ -58,17 +58,17 @@ def register_user(request):
             # Delete code used for registration.
             RegisterCode.objects.filter(code=code)[0].delete()
             #redirect user to login page with username already filled in
-            return redirect('login', username)
+            return redirect('accounts:login', username)
     else:
         form = RegisterForm()
     return render(request, 'registration/register_form.html', {"form": form})
 
 @login_required    
-def show_user(request, id=None, username=None):
+def user_profile(request, id=None, username=None):
     if id is not None:
         user = get_object_or_404(User, id=id)
     elif username is not None:
         user = get_object_or_404(User, username=username)
     else:
         user = request.user
-    return render(request, 'main_screen/show_user.html', {"user": user})
+    return render(request, 'main_screen/user_profile.html', {"user": user})

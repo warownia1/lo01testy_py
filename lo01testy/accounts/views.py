@@ -30,9 +30,12 @@ def login_user(request, username=None):
     URL: /accounts/login/
          /accounts/login/<username>/
     """
+    next = request.GET.get("next")
     if username:
         form = LoginForm(initial={'username': username})
-        return render(request, 'registration/login_form.html', {"form": form})
+        return render(request, 'registration/login_form.html', 
+            {"form": form, "next": next}
+        )
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -42,7 +45,8 @@ def login_user(request, username=None):
             )
             if (user is not None) and (user.is_active):
                 login(request, user)
-                return redirect('accounts:user_profile')
+                target_page = request.GET.get('next', 'accounts:user_profile')
+                return redirect(target_page)
             else:
                 error = ValidationError(
                     "Nieprawidłowy login lub hasło",
@@ -51,7 +55,9 @@ def login_user(request, username=None):
                 form.add_error('username', error)
     else:
         form = LoginForm()
-    return render(request, 'registration/login_form.html', {"form": form})
+    return render(request, 'registration/login_form.html', 
+        {"form": form, "next": next}
+    )
 
 
 def logout_user(request):

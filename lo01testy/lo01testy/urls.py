@@ -21,18 +21,22 @@ import examination.views
 
 exam_urlpatterns = [
     url(r'^list/$', examination.views.exams_list, name="list"),
-    url(r'^overview/(?P<id>[0-9]+)/$', examination.views.exam_overview, name='overview'),
+    url(r'^overview/(?P<id>[0-9]+)/$',
+        examination.views.exam_overview, name='overview'),
     url(r'^init/(?P<id>[0-9]+)/$', examination.views.init_exam, name='init'),
     url(r'^question/$', examination.views.question, name='question'),
     url(r'^result/$', examination.views.final_result, name='show_results'),
 ]
 
 accounts_urlpatterns = [
-    url(r'^login/(?:(?P<username>[\w+\-\.@]+)/)?$', accounts.views.login_user, name='login'),
+    url(r'^login/(?:(?P<username>[\w+\-\.@]+)/)?$',
+        accounts.views.login_user, name='login'),
     url(r'^register/$', accounts.views.register_user, name='registration'),
     url(r'^logout/$', accounts.views.logout_user, name='logout'),
-    url(r'^user/id/(?P<id>[0-9]+)/$', accounts.views.user_profile, name='user_profile'),
-    url(r'^user/(?:(?P<username>[\w+\-\.@]+)/)?$', accounts.views.user_profile, name='user_profile'),
+    url(r'^user/id/(?P<id>[0-9]+)/$',
+        accounts.views.user_profile, name='user_profile'),
+    url(r'^user/(?:(?P<username>[\w+\-\.@]+)/)?$',
+        accounts.views.user_profile, name='user_profile'),
 ]
 
 urlpatterns = [

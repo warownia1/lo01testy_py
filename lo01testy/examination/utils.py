@@ -1,4 +1,5 @@
 import json
+import math
 from random import random
 from itertools import count
 
@@ -7,41 +8,51 @@ from .enums import QuestionType
 
 
 class ExamBuilder:
+    """Draws the random questions to the new exam.
 
-    # rating difference where probability of picking that question is halved
+    Probability of drawing each question is based on the user rating and the
+    question score.
+    Each question is assigned a weight which is calculated as:
+        w = 2 ** (-d*d)
+    where
+        d = (rating - score) / SCORE_DIFFERENCE
+    Effectively, questions which score differs from student's rating by
+    SCORE_DIFFERENCE has 50% less chance to be drawn than if they had the same
+    score as the rating.
+
+    Attributes:
+      exam (Exam): exam which it chooses questions to
+      peak (int): the score where the most questions are drawn (user rating)
+      difficulty (int): difficulty of the questions set
+    """
+
+    # rating difference where probability of picking the question is halved
     SCORE_DIFFERENCE = 300
 
     def __init__(self, exam_id):
         self.exam = Exam.objects.prefetch_related(
             'question_set'
-        ).get(id=exam_id)
-        return
+        ).get(
+            id=exam_id
+        )
 
-    # Set the location of the peak where the most questions are drawn
     def set_rating(self, rating):
+        """Sets the location of the score peak"""
         self.peak = rating
-        return
 
-    # Sets the difficulty level for the question set.
-    # Does not affect peak location but amount of question at each side of the peak.
-    # Not implemented yet.
     def set_difficulty(self, difficulty):
+        """Sets the difficulty of the question set.
+        Difficulty determines the amount of questions drawn from each side of
+        the main rating.
+        """
         self.difficulty = difficulty
-        return
+        raise NotImplementedError("Difficulty cannot be set")
 
-    # Takes the amount of questions to draw and returns Question objects
     def draw_questions(self):
+        """Returns the list of questions chosen according to their score."""
         questions = self.exam.question_set.all()
         amount = self.exam.num_questions
-        weight_sum = 0
-        weights = []
-        # iterates over questions and gets their weights
-        for question in questions:
-            rating = question.rating
-            diff = (rating - self.peak) / self.SCORE_DIFFERENCE
-            weight = pow(2, -diff*diff)
-            weights.append(weight)
-            weight_sum += weight
+        weights, weight_sum = self.get_weights(questions)
         result = []
         while amount:
             rand = weight_sum * random()
@@ -56,52 +67,65 @@ class ExamBuilder:
             amount -= 1
         return result
 
+    def get_weights(self, questions):
+        """Returns the list of weights for each question and their sum."""
+        weights = []
+        sum = 0
+        for question in questions:
+            rating = question.rating
+            diff = (rating - self.peak) / self.SCORE_DIFFERENCE
+            weight = 2 ** (-diff * diff)
+            weights.append(weight)
+            sum += weight
+        return (weights, sum)
+
 
 class ScoreCalculator:
+    """Calculator of the score gained for the answers.
 
-    # slope of the curve
-    # the tangent line slope is -ln(a)/4
-    SLOPE = 1.05
-    # default score expected from the student to archieve
-    EXPECTED_SCORE = 0.7
+    It calculates a score, expected score and the change in the rating for
+    given answer to the question. Calculations are based on the elo rating
+    system with small modifications to constants.
+
+    Expected score is taken from the logistic function with the steepnes
+    STEEP. The gradient at the inflection point is STEEP / 4.
+    When student's and question's ratings are the same, then the score the
+    student is expected to reach is REF_SCORE. It corresponds to moving the
+    logistic curve along the x-axis so it intersects the y-axis at REF_SCORE
+    Equation: 1 / (1 + exp(-ax))
+
+    Multiplier is applied to the score obtained above the expected score to
+    find the user rating change.
+    On average user gain MULTIPLIER * (1-REF_SCORE) points.
+    """
+
+    # the slope of the curve at the inflection point is a = STEEP / 4
+    STEEP = 0.01
+    # the reference score, the rating won't change if achieved
+    REF_SCORE = 0.7
     # difference between max score gain and max score lose
     MULTIPLIER = 50
 
-    # Takes a question queryset and the answer of the user.
-    # Questyset should have prefetched answer_set.
-    # In case of a single choice question, answer shall contain a number
-    # In case of a multiple choice, answer shall contain a list of ids
-    # Returns the score of the answer which is 1 for correct and 0 for incorrect
     def get_answer_score(self, question, answer):
+        """Calculates the score student get for the answer.
+
+        Arguments:
+          question (Question): the question queryset with `answer_set`
+          answer: the answer given by the user (type varies by question type)
+        """
         correct_answers = question.answer_set.filter(is_correct=True).all()
         correct_answer_ids = set([ans.id for ans in correct_answers])
         if question.type == QuestionType.single_choice:
             answer_id = int(answer)
-            if answer_id in correct_answer_ids:
-                return 1
-            else:
-                return 0
+            return answer_id in correct_answer_ids
 
         elif question.type == QuestionType.multiple_choice:
-            answer_ids = set([int(ans) for ans in answer])
-            # ::: Method 2 :::
-            # User starts with 1 point and each missing correct answer or
-            # incorrect answer takes 0.5 points from his score
+            answer_ids = set(map(int, answer))
+            # User starts with 1 point and each incorrect answer or missing
+            # correct answer takes 0.5 points from his score
             score = 1 - (len(correct_answer_ids - answer_ids) +
                          len(answer_ids - correct_answer_ids)) / 2
-            if score < 0:
-                return 0
-            else:
-                return score
-            # ::: Method 1 :::
-            # Each correct or incorrect answer is worth 1/len(correct) points
-            # Correct answers are added to the result and incorrect are subtracted
-            gain = (len(correct_answer_ids) -
-                    len(correct_answer_ids - answer_ids) -
-                    len(answer_ids - correct_answer_ids))
-            if gain < 0:
-                return 0
-            return gain / len(correct_answer_ids)
+            return score if score >= 0 else 0
 
         elif question.type == QuestionType.open_ended:
             return 1
@@ -111,19 +135,43 @@ class ScoreCalculator:
 
         else:
             raise ValueError('Invalid question type {}'.format(question))
-        return
 
-    # Returns the score expected from the user to achieve
     def get_expected_score(self, user_rating, question_rating):
-        A = self.EXPECTED_SCORE / (1 - self.EXPECTED_SCORE)
+        """Returns the score user is expected to reach.
+
+        Expected score is the score which won't affect the rating. It's
+        calculated using the logistic function
+        """
+        A = self.REF_SCORE / (1 - self.REF_SCORE)
         diff = question_rating - user_rating
-        return round(A / (A + self.SLOPE ** diff), 6)
+        return round(A / (A + math.exp(self.STEEP * diff)), 6)
 
     def get_rating_change(self, score, expected_score):
+        """Returns the amount of ratig points for the answer"""
         return self.MULTIPLIER * (score - expected_score)
 
 
 class ExamFinalizer:
+    """Class managing the post-exam actions.
+    Saves the finished exam to the log and checks answers where possible.
+
+    Arguments:
+        user (User): the user who took the exam
+        exam_id (int): database id of the exam
+        question_ids ([int]): the list of answered questions ids
+        answers ([dict]): dicts with info about given answers
+            {'question_id', 'question_type', 'answer'}
+        practise (bool): whether the practise mode was enabled
+
+    Attributes:
+        user (User): user who took the exam
+        exam_id (int): id of the test
+        questions_queryset (Question): queryset with exam questions, answer_set
+            is prefetched
+        answers ([dict]): dicts with user's answers
+        practise (bool): practise mode
+        calculator (ScoreCalculator): the instance of the calculator
+    """
 
     def __init__(self, user, exam_id, question_ids, answers, practise):
         self.user = user
@@ -133,13 +181,12 @@ class ExamFinalizer:
         ).filter(
             id__in=question_ids
         )
-        # answer is a dictionary {question_id, question_type, answer}
         self.answers = answers
         self.practise = practise
         self.calculator = ScoreCalculator()
-        return
 
     def save_exam(self):
+        """Saves the answers and the exam log into the database"""
         exam_register = ExamRegister(
             user=self.user,
             exam_id=self.exam_id,
@@ -147,38 +194,29 @@ class ExamFinalizer:
         )
         exam_register.save()
         for raw_answer in self.answers:
-            if raw_answer['question_type'] == QuestionType.single_choice:
-                answer = int(raw_answer['answer'])
-            elif raw_answer['question_type'] == QuestionType.multiple_choice:
-                answer = [int(a) for a in raw_answer['answer']]
-            elif raw_answer['question_type'] == QuestionType.open_ended:
-                answer = raw_answer['answer']
-            else:
-                raise ValueError("Invalid QuestionType")
+            answer = self.parse_answer(
+                raw_answer['question_type'], raw_answer['answer']
+            )
             AnswerRegister(
                 exam_attempt=exam_register,
                 question_id=int(raw_answer['question_id']),
                 answer=answer,
                 graded=True
             ).save()
-        return
 
     def adjust_rating(self):
+        """Checks the answers and adjusts question and user rating"""
         total_rating_change = 0
         for raw_answer in self.answers:
             question = self.questions_queryset.get(
                 id=raw_answer['question_id']
             )
-            if question.type == QuestionType.single_choice:
-                answer = int(raw_answer['answer'])
-            elif question.type == QuestionType.multiple_choice:
-                answer = [int(a) for a in raw_answer['answer']]
-            else:
-                answer = raw_answer['answer']
+            answer = self.parse_answer(
+                question.type, raw_answer['answer']
+            )
             score = self.calculator.get_answer_score(question, answer)
             expected_score = self.calculator.get_expected_score(
-                self.user.student.rating,
-                question.rating
+                self.user.student.rating, question.rating
             )
             rating_change = self.calculator.get_rating_change(
                 score, expected_score
@@ -190,3 +228,14 @@ class ExamFinalizer:
         self.user.student.rating += rounded_total_change
         self.user.student.save()
         return rounded_total_change
+
+    def parse_answer(self, question_type, answer):
+        """Parses the serialized answer according to the question type"""
+        if question_type == QuestionType.single_choice:
+            return int(answer)
+        elif question_type == QuestionType.multiple_choice:
+            return [int(a) for a in answer]
+        elif question_type == QuestionType.open_ended:
+            return answer
+        else:
+            raise ValueError("Invalid QuestionType")

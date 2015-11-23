@@ -92,7 +92,6 @@ def init_exam(request, id):
             exam = Exam.objects.get(id=id)
             exam_builder = ExamBuilder(id)
             exam_builder.set_rating(request.user.student.rating)
-            exam_builder.set_difficulty(0)
             question_ids = [q.id for q in exam_builder.draw_questions()]
             # a good candidate for a named tuple
             request.session['exam'] = {
@@ -161,7 +160,7 @@ def question(request):
                 ef.save_exam()
                 rating_change = ef.adjust_rating()
 
-                redir =  redirect('exam:show_results')
+                redir = redirect('exam:show_results')
                 redir['Location'] += "?{}".format(
                     urllib.parse.urlencode({"change": rating_change})
                 )

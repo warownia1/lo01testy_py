@@ -20,6 +20,7 @@ def index(request):
     else:
         return redirect('accounts:login')
 
+
 def login_user(request, username=None):
     """Displays login form and runs authentication process.
 
@@ -52,6 +53,7 @@ def login_user(request, username=None):
         form = LoginForm()
     return render(request, 'registration/login_form.html', {"form": form})
 
+
 def logout_user(request):
     """Finishes the session and logs the user out.
 
@@ -61,6 +63,7 @@ def logout_user(request):
     request.session.flush()
     logout(request)
     return redirect('accounts:login')
+
 
 def register_user(request):
     """Displays registration form and runs user registration.
@@ -80,11 +83,12 @@ def register_user(request):
             new_user.student.save()
             # Delete code used for registration.
             RegisterCode.objects.filter(code=code)[0].delete()
-            #redirect user to login page with username already filled in
+            # redirect user to login page with username already filled in
             return redirect('accounts:login', username)
     else:
         form = RegisterForm()
     return render(request, 'registration/register_form.html', {"form": form})
+
 
 @login_required
 def user_profile(request, id=None, username=None):

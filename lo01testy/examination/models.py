@@ -92,8 +92,8 @@ class Answer(models.Model):
             return "Q{}: {}...".format(self.question_id, self.text[:50])
         else:
             return "Q{}: {}".format(self.question_id, self.text)
-            
-            
+
+
 class ExamRegister(models.Model):
     """Collection of all exams already taken by students."""
     user = models.ForeignKey(User)
@@ -102,12 +102,12 @@ class ExamRegister(models.Model):
     date = models.DateField(auto_now_add=True)
     # rating of the user when was taking the exam
     user_rating = models.IntegerField()
-    
+
     def __str__(self):
         return "{} - {} - {}".format(
             self.date, self.exam.name, self.user.username)
-    
-    
+
+
 # this model is storing students' answers
 # it's user in open-ended questions rather than single/multiple choice
 class AnswerRegister(models.Model):

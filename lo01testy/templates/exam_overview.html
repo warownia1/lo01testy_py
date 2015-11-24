@@ -1,0 +1,38 @@
+{% extends "main_base.html" %}
+
+{% load staticfiles %}
+
+{% block styles %}
+<link rel='stylesheet' type='text/css'
+	  href="{% static 'css/exam_overview.css' %}" />
+{% endblock %}
+
+{% block header %}
+Test #{{ exam.id }}
+{% endblock %}
+
+{% block content %}
+<section class="section section--skin">
+	<h1>
+		{{ exam.name }}
+	</h1>
+	{% for assign in assigns %}
+		<p>
+			{{ assign.group.name }} &ndash; {{ assign.due_date|date:"d E Y" }}
+		</p>
+	{% empty %}
+		<p>Ten test nie jest przypisany do żadnej grupy, do której należysz</p>
+	{% endfor %}
+	{% if assigns %}
+		<div class="buttons-wrapper-3">
+			<a class='button primary-btn' 
+			   href="{% url 'exam:init' exam.id %}">
+				Rozpocznij test
+			</a>
+			<a class='button secondary-btn' href=''>
+				Trening
+			</a>
+		</div>
+	{% endif %}
+</section>
+{% endblock %}

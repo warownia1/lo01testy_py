@@ -1,13 +1,14 @@
-{% extends "main_screen/main_screen_base.html" %}
+{% extends "main_base.html" %}
 
 {% load staticfiles %}
 
-{% block includes %}
-<link rel='stylesheet' type='text/css' href="{% static 'css/default/form_style.css' %}" />
+{% block styles %}
+<link rel='stylesheet' type='text/css'
+	  href="{% static 'css/exam_init.css' %}" />
 {% endblock %}
 
 {% block header %}
-	Rozpocznij test #{{ exam.id }}
+Rozpocznij test #{{ exam.id }}
 {% endblock %}
 
 {% block content %}
@@ -24,7 +25,9 @@
 		{{ field }}
 	</div>
 	{% endfor %}
-	<input class='button button--skin' type='submit' value='Potwierdź' />
+	<div class="buttons-wrapper-2">
+		<input class='button primary-btn' type='submit' value='Potwierdź' />
+	</div>
 	</form>
 </section>
 {% endblock %}

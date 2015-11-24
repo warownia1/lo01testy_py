@@ -1,0 +1,22 @@
+@import '_base.css';
+
+header {
+	padding: 20px 50px;
+	background-color: #020;
+}
+
+header h1 {
+	font-size: 1.5em;
+}
+
+.content {
+	padding: 20px 50px;
+	background-color: #EEE;
+	color: #070;
+}
+
+section {
+	margin: 20px 0;
+	border-bottom: 1px solid;
+	border-color: #C0E0C0;
+}

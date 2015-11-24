@@ -1,18 +1,19 @@
-{% extends "main_screen/main_screen_base.html" %}
+{% extends "main_base.html" %}
 
 {% load staticfiles %}
 
-{% block includes %}
-	<link rel='stylesheet' type='text/css' href="{% static 'css/default/show_user.css' %}" />
+{% block styles %}
+<link rel='stylesheet' type='text/css'
+	  href="{% static 'css/user_profile.css' %}" />
 {% endblock %}
 
 
 {% block header %}
-	Dane ucznia
+Dane ucznia
 {% endblock %}
 
 {% block content %}
-	<section class="section section--skin user-details">
+<section>
 	<h1>
 	{{ user.username }}
 	</h1>
@@ -43,15 +44,5 @@
 	<p>
 		<span class="field-label">Wynik:</span> {{ user.student.rating }}
 	</p>
-	</section>
-	<section class="section section--skin">
-		<div class="search-input-box">
-			<div class='icon-box'>
-				<div class="icon-wrapper">
-				<img src="{% static 'img/icons/magnifier.svg' %}" />
-				</div>
-			</div>
-			<input type='text' placeholder='wyszukaj...' />
-		</div>
-	</section>
+</section>
 {% endblock %}

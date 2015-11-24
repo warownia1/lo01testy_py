@@ -1,0 +1,92 @@
+html {
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	background-attachment: fixed;
+	font-weight: normal;
+	font-family: "Century Gothic";
+	margin: 0;
+	padding: 0;
+
+	background-color: #020;
+	color: #FFF;
+}
+
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+header > h1 {
+	margin: 0;
+}
+
+a {
+	color: inherit;
+}
+
+.danger {
+	color: #E00;
+}
+.warning {
+	color: #FD0;
+}
+
+/* buttons styling */
+.button{
+	cursor: pointer;
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	margin: 10px 0;
+	padding: 12px 10px;
+	text-align: center;
+	font-family: inherit;
+	font-size: 14pt;
+	text-decoration: none;
+	transition: background-color 0.1s;
+}
+.button:focus {
+	outline-color: #0A0;
+}
+
+/* primary button style */
+.primary-btn {
+	background-color: #070;
+	color: #EFE;
+	border: none;
+}
+.primary-btn:focus{
+	box-shadow: 0 0 5px #0B0;
+	background-color: #180;
+}
+.primary-btn:hover{
+	background-color: #291;
+}
+
+/* secondary button style */
+.secondary-btn {
+	border: 1px solid #888;
+	color: #222;
+	background-color: #EEE;
+}
+.secondary-btn:hover {
+	background-color: #FFF;
+}
+
+/* wrappers for buttons */
+.buttons-wrapper-2 {
+	width: 200px;
+	margin: 20px 0;
+}
+.buttons-wrapper-3 {
+	width: 300px;
+	margin: 20px 0;
+}
+.buttons-wrapper-4 {
+	width: 400px;
+	margin: 20px 0;
+}
+

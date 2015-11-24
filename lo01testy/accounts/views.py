@@ -119,3 +119,28 @@ def user_profile(request, id=None, username=None):
     else:
         user = request.user
     return render(request, 'user_profile.html', {"user": user})
+
+
+@login_required
+def account_settings(request):
+    """Displays the account settings menu
+
+    name: accounts:account_settings
+    URL: /accounts/settings/
+    """
+    return render(request, 'account_settings.html', {"user": request.user})
+
+
+@login_required
+def change_email(request):
+    pass
+
+
+@login_required
+def change_password(request):
+    pass
+
+
+@login_required
+def change_personal(request):
+    pass

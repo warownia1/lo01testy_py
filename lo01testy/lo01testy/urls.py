@@ -37,6 +37,13 @@ accounts_urlpatterns = [
         accounts.views.user_profile, name='user_profile'),
     url(r'^user/(?:(?P<username>[\w+\-\.@]+)/)?$',
         accounts.views.user_profile, name='user_profile'),
+    url(r'^settings/$', accounts.views.account_settings, name='settings'),
+    url(r'^settings/email/$', 
+        accounts.views.change_email, name='change_email'),
+    url(r'^settings/password/$',
+        accounts.views.change_password, name='change_password'),
+    url(r'^settings/personal/$',
+        accounts.views.change_personal, name='change_personal'),
 ]
 
 urlpatterns = [

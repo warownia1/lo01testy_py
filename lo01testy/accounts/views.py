@@ -33,7 +33,7 @@ def login_user(request, username=None):
     next = request.GET.get("next")
     if username:
         form = LoginForm(initial={'username': username})
-        return render(request, 'registration/login_form.html', 
+        return render(request, 'login.html',
             {"form": form, "next": next}
         )
     if request.method == 'POST':
@@ -55,7 +55,7 @@ def login_user(request, username=None):
                 form.add_error('username', error)
     else:
         form = LoginForm()
-    return render(request, 'registration/login_form.html', 
+    return render(request, 'login.html',
         {"form": form, "next": next}
     )
 
@@ -93,7 +93,7 @@ def register_user(request):
             return redirect('accounts:login', username)
     else:
         form = RegisterForm()
-    return render(request, 'registration/register_form.html', {"form": form})
+    return render(request, 'registration.html', {"form": form})
 
 
 @login_required
@@ -118,4 +118,4 @@ def user_profile(request, id=None, username=None):
         user = get_object_or_404(User, username=username)
     else:
         user = request.user
-    return render(request, 'main_screen/user_profile.html', {"user": user})
+    return render(request, 'user_profile.html', {"user": user})

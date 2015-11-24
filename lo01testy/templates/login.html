@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+{% load staticfiles %}
+
+<html lang="pl">
+<head>
+	<meta charset="utf-8" />
+	<link rel='stylesheet' type='text/css'
+		  href="{% static 'css/authorization.css' %}" />
+</head>
+<body>
+	<div class="content">
+		<h1 class="login-header">
+		Logowanie
+		</h1>
+		{% if next %}
+		<form action="{% url 'accounts:login' %}?next={{ next }}"
+			  method='POST'>
+		{% else %}
+		<form action="{% url 'accounts:login' %}"
+			  method='POST'>
+		{% endif %}
+			{% csrf_token %}
+			{% for field in form %}
+			<div class="field-wrapper">
+				{{ field.label_tag }}
+				{{ field.errors }}
+				{{ field }}
+			</div>
+			{% endfor %}
+			<div class="form-buttons">
+				<input class="button primary-btn"
+					   type="submit" value="Zaloguj" />
+				<a class="button secondary-btn" 
+				   href="{% url 'accounts:registration' %}">
+					Utwórz nowe konto
+				</a>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

@@ -1,8 +1,10 @@
-{% extends "main_screen/main_screen_base.html" %}
+{% extends "main_base.html" %}
 
 {% load staticfiles %}
 
-{% block includes %}
+{% block styles %}
+<link rel="stylesheet" type="text/css"
+	  href="{% static 'css/final_result.css' %}" />
 {% endblock %}
 
 {% block header %}
@@ -10,7 +12,7 @@
 {% endblock %}
 
 {% block content %}
-	<section class="section section--skin">
+<section>
 	<h1>
 		Twój wynik: {{ rating }}
 	</h1>
@@ -19,10 +21,12 @@
 		{% if change > 0 %}
 			wzrósł o {{ change }}
 		{% elif change < 0 %}
-			spadł o <span class="red">{{ change }}</span>
+			spadł o <span class="danger">
+				{{ change|stringformat:"d"|slice:"1:" }}
+			</span>
 		{% else %}
 			nie zmienił się
 		{% endif %}
 	</p>
-	</section>
+</section>
 {% endblock %}

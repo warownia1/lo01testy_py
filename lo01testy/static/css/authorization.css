@@ -1,0 +1,50 @@
+@import '_base.css';
+
+.content {
+	display: block;
+	width: 400px;
+	margin: 0em auto;
+	padding: 1px;
+
+	background-color: #EEE;
+	color: #070;
+}
+
+.login-header {
+	padding: 0px;
+	width: auto;
+	display: block;
+	text-align: center;
+	font-size: 34px;
+	font-weight: normal;
+}
+
+/* Styling form fields */
+.field-wrapper {
+	display: block;
+	width: auto;
+	margin: 0px 0px;
+	padding: 10px 50px;
+}
+.field-wrapper > input {
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	padding: 10px 10px;
+	border: solid 1px #BBB;
+	font-family: inherit;
+}
+.field-wrapper > input:focus {
+	outline-color: #0A0;
+}
+.field-wrapper > .errorlist {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	font-size: 12px;
+}
+
+/* Form control buttons */
+.form-buttons {
+	margin: 15px;
+}

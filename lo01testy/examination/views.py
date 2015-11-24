@@ -44,8 +44,10 @@ def exams_list(request):
     ).order_by(
         "-closest_due_date"  # sort by the closest past date
     )
-    return render(request, 'main_screen/exams_list.html',
-                  {"exams": exams, "old_exams": old_exams})
+    return render(
+        request, 'exams_list.html',
+        {"exams": exams, "old_exams": old_exams}
+    )
 
 
 @login_required
@@ -60,8 +62,10 @@ def exam_overview(request, id):
     ).prefetch_related('assign_set__group')
     exam = get_object_or_404(queryset, id=id)
     assigns = exam.assign_set.order_by('-due_date').all()
-    return render(request, 'main_screen/exam_overview.html',
-                  {"exam": exam, "assigns": assigns})
+    return render(
+        request, 'exam_overview.html',
+        {"exam": exam, "assigns": assigns}
+    )
 
 
 @login_required
@@ -109,7 +113,7 @@ def init_exam(request, id):
         form = ExamCodeForm()
     exam = get_object_or_404(Exam, id=id)
     return render(
-        request, 'main_screen/enter_exam_code.html',
+        request, 'enter_exam_code.html',
         {'exam': exam, 'form': form}
     )
 
@@ -169,7 +173,7 @@ def question(request):
         form = AnswerForm(question.type, answers_list)
 
     return render(
-        request, 'main_screen/question.html',
+        request, 'question.html',
         {
             'exam': exam,
             'question': question,
@@ -191,7 +195,7 @@ def final_result(request):
         rating_change = 0
     current_rating = request.user.student.rating
     return render(
-        request, 'main_screen/result_screen.html',
+        request, 'final_result.html',
         {
             'change': int(rating_change),
             'rating': current_rating

@@ -1,0 +1,87 @@
+/* Navigation bar styles and placement */
+.top-nav {
+	display: block;
+	background-color: #070;
+}
+
+.top-nav ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+}
+
+.top-nav ul > li {
+	display: block;
+	flex: 0 1 auto;
+	font-size: 13pt;
+	border-right: 1px solid #040;
+}
+
+.top-nav ul > li:first-child {
+	border-left: 1px solid #040;
+}
+
+.top-nav li > a {
+	display: block;
+	box-sizing: border-box;
+	padding: 10px 30px;
+	line-height: 40px;
+	text-align: center;
+	text-decoration: none;
+	transition: all 0.2s ease-out;
+
+	color: #EEE;
+}
+
+.top-nav li > a:hover {
+	color: #070;
+	background-color: #EEE;
+}
+
+.top-nav li > a:focus {
+	outline-color: #0C0;
+}
+
+/* Icons placement and transitions*/
+.top-nav li > a > .menu-icon {
+	height: 40px;
+	display: block;
+	margin: 0 auto;
+}
+
+.top-nav li > a:hover > .menu-icon path,
+.top-nav li > a:hover > .menu-icon circle {
+	transition: all 0.2s ease-out;
+}
+
+/* Gear icon appearance */
+.top-nav li > a > .gear-icon circle {
+	stroke: #EEE; 
+	stroke-width: 20px;
+	fill: none;
+}
+.top-nav li > a > .gear-icon path {
+	stroke: #EEE;
+	stroke-width: 5px;
+	stroke-linejoin: round;
+	fill: #EEE;
+}
+.top-nav li > a:hover > .gear-icon circle{
+	stroke: #070;
+}
+.top-nav li > a:hover > .gear-icon path {
+	stroke: #070; 
+	fill: #070;
+}
+
+/* Logout icon appearance */
+.top-nav li > a > .logout-icon path {
+	stroke: #EEE;
+	stroke-width: 7px; 
+	stroke-linecap: round; 
+	fill: none;
+}
+.top-nav li > a:hover > .logout-icon path {
+	stroke: #070;
+}

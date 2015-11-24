@@ -1,13 +1,18 @@
-{% extends "main_screen/main_screen_base.html" %}
+{% extends "main_base.html" %}
 
 {% load staticfiles %}
 
+{% block styles %}
+<link rel="stylesheet" type="text/css"
+	  href="{% static 'css/exams_list.css' %}">
+{% endblock %}
+
 {% block header %}
-	Lista Testów
+Lista Testów
 {% endblock %}
 
 {% block content %}
-	<section class="section section--skin">
+<section class="section section--skin">
 	<h1>
 	Nadchodzące testy
 	</h1>
@@ -28,5 +33,5 @@
 		{{ exam.name }} &ndash; {{ exam.closest_due_date|date:"d E Y" }}
 		</p>
 	{% endfor %}
-	</section>
+</section>
 {% endblock %}

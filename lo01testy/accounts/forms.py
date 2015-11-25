@@ -8,7 +8,7 @@ from .models import RegisterCode
 
 
 class LoginForm(forms.Form):
-	username = forms.CharField(
+    username = forms.CharField(
         label="Użytkownik",
         max_length=30,
         error_messages={
@@ -16,9 +16,9 @@ class LoginForm(forms.Form):
             "max_length": "Maksymalna ilość znaków: 25",
         }
     )
-	password = forms.CharField(
+    password = forms.CharField(
         label="Hasło",
-        max_length=50, 
+        max_length=50,
         widget=forms.PasswordInput,
         error_messages={
             "required": "To pole jest wymagane",
@@ -26,7 +26,7 @@ class LoginForm(forms.Form):
         }
     )
 
-    
+
 class RegisterForm(forms.Form):
     username = forms.CharField(
         label="Nazwa użytkownika",
@@ -62,7 +62,7 @@ class RegisterForm(forms.Form):
             "required": "To pole jest wymagane"
         }
     )
-    
+
     def clean_username(self):
         username = self.cleaned_data.get('username')
         if re.search(r'[^\w@\.\-+]', username):
@@ -76,8 +76,7 @@ class RegisterForm(forms.Form):
                 code='username_exists'
             )
         return username
-        
-        
+
     def clean_password2(self):
         password = self.cleaned_data.get('password')
         password2 = self.cleaned_data.get('password2')
@@ -87,7 +86,7 @@ class RegisterForm(forms.Form):
                 code='pass_not_match'
             )
         return password
-        
+
     def clean_code(self):
         code = self.cleaned_data.get('code')
         if not RegisterCode.objects.filter(code=code).exists():
@@ -96,4 +95,3 @@ class RegisterForm(forms.Form):
                 code='invalid_code'
             )
         return code
-    

@@ -1,0 +1,19 @@
+@import '_main_base.css';
+
+.field-wrapper {
+	display: block;
+	width: auto;
+	margin: 10px 0px;
+	padding: 0;
+}
+
+.field-wrapper .errorlist {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	font-size: 12px;
+}
+
+.field-wrapper label{
+	display: block;
+}

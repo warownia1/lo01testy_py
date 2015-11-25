@@ -29,15 +29,17 @@ class StudentAdmin(admin.ModelAdmin):
 
     def first_name(self, obj):
         return obj.user.first_name
-    def last_name(self,obj):
+
+    def last_name(self, obj):
         return obj.user.last_name
-    pass
 
 
 # Very ugly solution, shame on you!
 def user_str(self):
     if self.last_name and self.first_name:
-        return "{} -- {} {}".format(self.username, self.last_name, self.first_name)
+        return "{} -- {} {}".format(
+            self.username, self.last_name, self.first_name
+        )
     elif self.last_name:
         return "{} -- {}".format(self.username, self.last_name)
     else:
@@ -49,8 +51,4 @@ admin.site.unregister(Group)
 admin.site.unregister(User)
 admin.site.register(User, MyUserAdmin)
 admin.site.register(RegisterCode)
-admin.site.register(Student,StudentAdmin)
-
-# admin_site.register(User, MyUserAdmin)
-# admin_site.register(RegisterCode)
-# admin_site.register(Student, StudentAdmin)
+admin.site.register(Student, StudentAdmin)

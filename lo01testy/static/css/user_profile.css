@@ -1,0 +1,6 @@
+@import '_main_base.css';
+
+.field-label {
+	display: inline-block;
+	width: 100px;
+}

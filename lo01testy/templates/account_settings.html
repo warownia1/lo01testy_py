@@ -1,0 +1,60 @@
+{% extends "main_base.html" %}
+
+{% load staticfiles %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css"
+	  href="{% static 'css/account_settings.css' %}">
+{% endblock %}
+
+{% block header %}
+Ustawienia Konta
+{% endblock %}
+
+{% block content %}
+<section>
+	<h1>
+	Dane Konta
+	</h1>
+	<h2>
+	{{ user.username }}
+	</h2>
+	<p>
+		<span class="span-1">Adres Email: </span>
+		{% if user.email %}
+			{{ user.email }}
+		{% else %}
+			[brak]
+		{% endif %}
+		<br \>
+		<a href="{% url 'accounts:change_email' %}">
+			zmień adres email
+		</a>
+	</p>
+	<p>
+		<span class="span-1">Hasło: </span>******** <br />
+		<a href="{% url 'accounts:change_password' %}">
+			zmień hasło
+		</a>
+	</p>
+	<p>
+		<span class="span-1">Imię:</span>
+		{% if user.first_name %}
+			{{ user.first_name }} 
+		{% else %}
+			[brak]
+		{% endif %}
+		<br \>
+		<span class="span-1">Nazwisko:</span>
+		{% if user.last_name %}
+			{{ user.last_name }}
+		{% else %}
+			[brak]
+		{% endif %}
+		<br \>
+		<a href="{% url 'accounts:change_personal' %}">
+			zmień dane osobowe
+		</a>
+	</p>
+</section>
+{% endblock %}

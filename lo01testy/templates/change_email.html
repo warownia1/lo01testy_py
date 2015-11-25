@@ -1,0 +1,31 @@
+{% extends "main_base.html" %}
+
+{% load staticfiles %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css"
+	  href="{% static 'css/account_settings.css' %}" />
+{% endblock %}
+
+{% block header %}
+Zmiana Adresu Email
+{% endblock %}
+
+{% block content %}
+<form action="{% url 'accounts:change_email' %}" method="POST">
+	{% csrf_token %}
+	{% for field in form %}
+		<div class="field-wrapper">
+			{{ field.errors }}
+			<span class="span-1">{{ field.label_tag }}</span>
+			{{ field }}
+		</div>
+	{% endfor %}
+	<div class="buttons-wrapper-2">
+		<input type="submit" value="Zapisz" class="button primary-btn">
+		<a class="button secondary-btn" href="{% url 'accounts:settings' %}">
+			Powrót
+		</a>
+	</div>
+</form>
+{% endblock %}

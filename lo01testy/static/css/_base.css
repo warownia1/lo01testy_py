@@ -76,7 +76,16 @@ a {
 	background-color: #FFF;
 }
 
-/* wrappers for buttons */
+/* wrappers for buttons and text */
+.span-1, span-2, span-3, span-4 {
+	display: inline-block;
+}
+.span-1{
+	min-width: 100px;
+}
+.span-2{
+	min-width: 200px;
+}
 .buttons-wrapper-2 {
 	width: 200px;
 	margin: 20px 0;

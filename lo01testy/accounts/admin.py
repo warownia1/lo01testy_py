@@ -5,6 +5,10 @@ from django.contrib.auth.models import User, Group
 from accounts.models import Student, RegisterCode
 
 
+class StudentInline(admin.StackedInline):
+    model = Student
+
+
 class MyUserAdmin(UserAdmin):
     fieldsets = (
         (None, {
@@ -21,17 +25,7 @@ class MyUserAdmin(UserAdmin):
         }),
     )
     readonly_fields = ('is_staff', 'is_superuser', 'date_joined', 'last_login')
-    pass
-
-
-class StudentAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'first_name', 'last_name', 'rating',)
-
-    def first_name(self, obj):
-        return obj.user.first_name
-
-    def last_name(self, obj):
-        return obj.user.last_name
+    inlines = (StudentInline, )
 
 
 # Very ugly solution, shame on you!
@@ -51,4 +45,3 @@ admin.site.unregister(Group)
 admin.site.unregister(User)
 admin.site.register(User, MyUserAdmin)
 admin.site.register(RegisterCode)
-admin.site.register(Student, StudentAdmin)

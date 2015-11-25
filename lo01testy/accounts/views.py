@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.forms import ValidationError
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, \
+                                update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, ChangePasswordForm, \
+                   ChangeEmailForm, ChangePersonalForm
 from .models import Student, RegisterCode
 
 
@@ -33,7 +35,8 @@ def login_user(request, username=None):
     next = request.GET.get("next")
     if username:
         form = LoginForm(initial={'username': username})
-        return render(request, 'login.html',
+        return render(
+            request, 'login.html',
             {"form": form, "next": next}
         )
     if request.method == 'POST':
@@ -55,7 +58,8 @@ def login_user(request, username=None):
                 form.add_error('username', error)
     else:
         form = LoginForm()
-    return render(request, 'login.html',
+    return render(
+        request, 'login.html',
         {"form": form, "next": next}
     )
 
@@ -119,3 +123,83 @@ def user_profile(request, id=None, username=None):
     else:
         user = request.user
     return render(request, 'user_profile.html', {"user": user})
+
+
+@login_required
+def account_settings(request):
+    """Displays the account settings menu
+
+    name: accounts:account_settings
+    URL: /accounts/settings/
+    """
+    return render(request, 'account_settings.html', {"user": request.user})
+
+
+@login_required
+def change_email(request):
+    """Change the user's email address
+
+    name: accounts: change_email
+    URL: /accounts/settings/email/
+    """
+    if request.method == "POST":
+        form = ChangeEmailForm(request.POST)
+        if form.is_valid():
+            request.user.email = form.cleaned_data['email']
+            request.user.save()
+    else:
+        form = ChangeEmailForm(
+            initial={"email": request.user.email}
+        )
+    return render(request, 'change_email.html', {"form": form})
+
+
+@login_required
+def change_password(request):
+    """Change the user's password
+
+    name: accounts:change_password
+    URL: /accounts/settings/password/
+    """
+    if request.method == "POST":
+        form = ChangePasswordForm(request.POST)
+        if form.is_valid():
+            old_password = form.cleaned_data['old_password']
+            if request.user.check_password(old_password):
+                new_password = form.cleaned_data['new_password']
+                request.user.set_password(new_password)
+                request.user.save()
+                update_session_auth_hash(request, request.user)
+                return redirect('accounts:change_password')
+            else:
+                error = ValidationError(
+                    "Podane hasło jest nieprawidłowe",
+                    code="incorrect_password"
+                )
+                form.add_error('old_password', error)
+    else:
+        form = ChangePasswordForm()
+    return render(request, 'change_password.html', {"form": form})
+
+
+@login_required
+def change_personal(request):
+    """Change the personal data of the user.
+
+    name: accounts:change_personal
+    URL: /accounts/settings/personal/
+    """
+    if request.method == "POST":
+        form = ChangePersonalForm(request.POST)
+        if form.is_valid():
+            request.user.first_name = form.cleaned_data['first_name']
+            request.user.last_name = form.cleaned_data['last_name']
+            request.user.save()
+    else:
+        form = ChangePersonalForm(
+            initial={
+                "first_name": request.user.first_name,
+                "last_name": request.user.last_name
+            }
+        )
+    return render(request, 'change_personal.html', {"form": form})

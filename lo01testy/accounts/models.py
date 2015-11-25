@@ -10,9 +10,6 @@ class Student(models.Model):
     user = models.OneToOneField(User)
     rating = models.IntegerField(default=1500)
 
-    def __str__(self):
-        return self.user.__str__()
-
 
 class RegisterCode(models.Model):
     """Codes required during registration of the user in the system.

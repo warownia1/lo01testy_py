@@ -22,7 +22,7 @@ class LoginForm(forms.Form):
         widget=forms.PasswordInput,
         error_messages={
             "required": "To pole jest wymagane",
-            "max_length": "maksymalna ilość znamów: 50",
+            "max_length": "Maksymalna ilość znaków: 50",
         }
     )
 
@@ -35,7 +35,7 @@ class RegisterForm(forms.Form):
         error_messages={
             "required": "To pole jest wymagane",
             "min_length": "Login jest zbyt krótki",
-            "max_width": "Login nie może zawierać więcej niż 30 znaków"
+            "max_length": "Login nie może zawierać więcej niż 30 znaków"
         }
     )
     password = forms.CharField(
@@ -95,3 +95,69 @@ class RegisterForm(forms.Form):
                 code='invalid_code'
             )
         return code
+
+
+class ChangePasswordForm(forms.Form):
+    old_password = forms.CharField(
+        label="Stare hasło",
+        max_length=50,
+        widget=forms.PasswordInput,
+        error_messages={
+            "required": "To pole jest wymagane",
+            "max_length": "Maksymalna ilość znaków: 50",
+        }
+    )
+
+    new_password = forms.CharField(
+        label="Nowe hasło",
+        min_length=3,
+        max_length=50,
+        widget=forms.PasswordInput,
+        error_messages={
+            "required": "To pole jest wymagane",
+            "min_length": "Hasło jest zbyt krótkie",
+            "max_length": "Maksymalna ilość znaków: 50",
+        }
+    )
+
+    new_password2 = forms.CharField(
+        label="Powtórz hasło",
+        max_length=50,
+        widget=forms.PasswordInput,
+        error_messages={
+            "required": "To pole jest wymagane",
+            "max_length": "Maksymalna ilość znaków: 50",
+        }
+    )
+
+    def clean_new_password2(self):
+        password = self.cleaned_data.get('new_password')
+        password2 = self.cleaned_data.get('new_password2')
+        if password != password2:
+            raise forms.ValidationError(
+                'Hasła są różne',
+                code='pass_not_match'
+            )
+        return password
+
+
+class ChangeEmailForm(forms.Form):
+    email = forms.EmailField(
+        label="Nowy adres",
+        error_messages={
+            "required": "To pole jest wymagane",
+            "invalid": "Podany adres jest nieprawidłowy",
+        },
+        widget=forms.EmailInput(attrs={"size": "35"})
+    )
+
+
+class ChangePersonalForm(forms.Form):
+    first_name = forms.CharField(
+        label="Imię",
+        required=False
+    )
+    last_name = forms.CharField(
+        label="Nazwisko",
+        required=False
+    )

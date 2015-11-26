@@ -38,7 +38,7 @@ def user_str(self):
         return "{} -- {}".format(self.username, self.last_name)
     else:
         return self.username
-User.__str__ = user_str
+# User.__str__ = user_str
 
 
 admin.site.unregister(Group)

@@ -90,7 +90,7 @@ class AnswerInline(admin.TabularInline):
 
 
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('exam','type','text','rating')
+    list_display = ('exam', 'type', 'text', 'rating')
     inlines = (AnswerInline,)
 
 

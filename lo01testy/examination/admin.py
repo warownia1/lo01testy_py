@@ -1,12 +1,15 @@
-from django.contrib import admin
+from io import TextIOWrapper
+
+from django.contrib import admin, messages
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
-from django.template import RequestContext
 from django.conf.urls import url
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, redirect
 
 from .models import *
+from .forms import UploadExamFileForm
+from .utils import ExamUpload
 
 
 class AssignInline(admin.TabularInline):
@@ -49,15 +52,35 @@ class ExamAdmin(admin.ModelAdmin):
         return my_urls + urls
 
     def upload_view(self, request):
+        if request.method == 'POST':
+            form = UploadExamFileForm(request.POST, request.FILES)
+            if form.is_valid():
+                exam_name = form.cleaned_data['exam_name']
+                num_questions = form.cleaned_data['num_questions']
+                file = request.FILES['file']
+                text_file = TextIOWrapper(file.file, newline='')
+                has_headers = form.cleaned_data['has_headers']
+                exam_upload = ExamUpload(exam_name, num_questions)
+                exam_upload.read_file(text_file, request.encoding, has_headers)
+                exam_upload.save_to_db()
+                messages.success(
+                    request,
+                    "The exam \"{}\" was uploaded successfully.".format(
+                        exam_name
+                    )
+                )
+                return redirect('admin:examination_exam_changelist')
+        else:
+            form = UploadExamFileForm()
+        context = dict(
+            admin.site.each_context(request),
+            has_change_permission=True,
+            title="Select file to upload",
+            form=form,
+            errors=form.errors
+        )
         return render(
-            request, 'admin/examination/exam/upload_form.html',
-            {
-                'title': "Select file to upload",
-                'has_permission': True,
-                'has_add_permission': True,
-                'has_change_permission': True,
-                'site_url': reverse('index')
-            }
+            request, 'admin/examination/exam/upload_form.html', context
         )
 
 

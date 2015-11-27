@@ -1,7 +1,10 @@
 import json
+import csv
 import math
+from io import TextIOWrapper
 from random import random
 from itertools import count
+from collections import namedtuple
 
 from .models import Exam, Question, Answer, ExamRegister, AnswerRegister
 from .enums import QuestionType
@@ -239,3 +242,81 @@ class ExamFinalizer:
             return answer
         else:
             raise ValueError("Invalid QuestionType")
+
+
+DataRow = namedtuple("DataRow", ['question', 'answers'])
+
+class ExamUpload:
+    """Parses the uploaded file and builds the exam
+
+    File should be a csv file of the following row structure:
+        question, type, rating, answer1, score1, answer2, score2, ...
+
+    Arguments:
+        exam_name (str): name of the exam
+        num_questions (int): number of questions given to the student
+
+    Attributes:
+        name (str): exam name
+        num_questions (int): number of questions
+        data ((DataRow)): parsed data from file
+    """
+    def __init__(self, exam_name, num_questions):
+        self.name = exam_name
+        self.num_questions = num_questions
+
+    def read_file(self, file, encoding, has_headers=False):
+        """Reads the csv file and parses into data rows generator"""
+        reader = csv.reader(file)
+        if has_headers:
+            next(reader)
+        self.data = []
+        for row in reader:
+            print(row)
+            data = self.validate_row(row)
+            print(data)
+            self.data.append(data)
+
+    def validate_row(self, row):
+        """Checks whether the row contains valid values
+
+        Returns:
+            A data row tuple with Question and Answer objects
+
+        Raises:
+            ValueError: one of the values was invalid
+        """
+        question = row[0]
+        if not QuestionType.is_valid(row[1]):
+            raise ValueError("Invalid question type {}".format(row[1]))
+        type = row[1]
+        rating = int(row[2] or 1500)
+        answers = [row[i:i+2] for i in range(3, len(row), 2) if row[i]]
+        # check if each answer has score
+        if not all(len(pair)==2 for pair in answers):
+            raise IndexError("Mismathed answers and scores")
+
+        return DataRow(
+            question=Question(text=question, type=type, rating=rating),
+            answers=[
+                Answer(text=ans[0], is_correct=ans[1]) for ans in answers
+            ]
+        )
+
+    def save_to_db(self):
+        """Saves the exam to the database
+
+        Raises:
+            AttributeError: No data field
+            IndexError: Not enough data rows
+        """
+        if not hasattr(self, 'data'):
+            raise AttributeError("Data was not uploaded")
+        if self.num_questions > len(self.data):
+            raise IndexError("Not enough questions")
+        exam = Exam.objects.create(
+            name=self.name, num_questions=self.num_questions
+        )
+        for row in self.data:
+            exam.question_set.add(row.question)
+            row.question.answer_set.add(*row.answers)

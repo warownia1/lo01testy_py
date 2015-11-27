@@ -74,3 +74,16 @@ class AnswerForm(forms.Form):
                 "{} is not a valid QuestionType".format(question_type)
             )
         return
+
+
+class UploadExamFileForm(forms.Form):
+    error_css_class = "error"
+    required_css_class = "required"
+
+    exam_name = forms.CharField(max_length=30)
+    num_questions = forms.IntegerField(label="Number of Questions")
+    file = forms.FileField(label = "CSV File")
+    has_headers = forms.BooleanField(
+        required=False,
+        help_text="The file has headers row"
+    )

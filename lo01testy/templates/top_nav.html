@@ -31,5 +31,10 @@
 		</svg>
 	</a>
 	</li>
+	{% if user.is_staff %}
+	<li>
+	<a href="{% url 'admin:index' %}">Admin</a>
+	</li>
+	{% endif %}
 	</ul>
 </nav>

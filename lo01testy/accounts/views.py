@@ -6,9 +6,9 @@ from django.contrib.auth import authenticate, login, logout, \
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
-from .forms import LoginForm, RegisterForm, ChangePasswordForm, \
+from .forms import LoginForm, RegistrationForm, ChangePasswordForm, \
                    ChangeEmailForm, ChangePersonalForm
-from .models import Student, RegisterCode
+from .models import Student, RegistrationCode
 
 
 def index(request):
@@ -82,21 +82,21 @@ def register_user(request):
     URL: /acounts/register/
     """
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
+        form = RegistrationForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             code = form.cleaned_data['code']
             # Create new entry in User and Student.
             new_user = User.objects.create_user(username, password=password)
-            Student(user=new_user)
+            Student(user=new_user, code=code)
             new_user.student.save()
             # Delete code used for registration.
-            RegisterCode.objects.filter(code=code)[0].delete()
+            RegistrationCode.objects.get(code=code).delete()
             # redirect user to login page with username already filled in
             return redirect('accounts:login', username)
     else:
-        form = RegisterForm()
+        form = RegistrationForm()
     return render(request, 'registration.html', {"form": form})
 
 

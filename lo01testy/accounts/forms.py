@@ -4,7 +4,7 @@ from django import forms
 from django.utils.html import escape
 from django.contrib.auth.models import User
 
-from .models import RegisterCode
+from .models import RegistrationCode
 
 
 class LoginForm(forms.Form):
@@ -27,7 +27,7 @@ class LoginForm(forms.Form):
     )
 
 
-class RegisterForm(forms.Form):
+class RegistrationForm(forms.Form):
     username = forms.CharField(
         label="Nazwa użytkownika",
         min_length=1,
@@ -89,10 +89,16 @@ class RegisterForm(forms.Form):
 
     def clean_code(self):
         code = self.cleaned_data.get('code')
-        if not RegisterCode.objects.filter(code=code).exists():
+        code_queryset = RegistrationCode.objects.filter(code=code)
+        if not code_queryset.exists():
             raise forms.ValidationError(
                 "Niewłaściwy kod",
                 code='invalid_code'
+            )
+        elif code_queryset[0].used:
+            raise forms.ValidationError(
+                "Kod został użyty",
+                code="code_used"
             )
         return code
 

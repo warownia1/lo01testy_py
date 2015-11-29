@@ -14,11 +14,10 @@ Ustawienia Konta
 {% block content %}
 <section>
 	<h1>
-	Dane Konta
+	Dane Konta &ndash; {{ user.username }}
 	</h1>
-	<h2>
-	{{ user.username }}
-	</h2>
+</section>
+<section>
 	<p>
 		<span class="span-1">Adres Email: </span>
 		{% if user.email %}
@@ -31,12 +30,16 @@ Ustawienia Konta
 			zmień adres email
 		</a>
 	</p>
+</section>
+<section>
 	<p>
 		<span class="span-1">Hasło: </span>******** <br />
 		<a href="{% url 'accounts:change_password' %}">
 			zmień hasło
 		</a>
 	</p>
+</section>
+<section>
 	<p>
 		<span class="span-1">Imię:</span>
 		{% if user.first_name %}

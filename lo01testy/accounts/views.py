@@ -117,12 +117,12 @@ def user_profile(request, id=None, username=None):
 
     """
     if id is not None:
-        user = get_object_or_404(User, id=id)
+        view_user = get_object_or_404(User, id=id)
     elif username is not None:
-        user = get_object_or_404(User, username=username)
+        view_user = get_object_or_404(User, username=username)
     else:
-        user = request.user
-    return render(request, 'user_profile.html', {"user": user})
+        view_user = request.user
+    return render(request, 'user_profile.html', {'view_user': view_user})
 
 
 @login_required
@@ -132,7 +132,7 @@ def account_settings(request):
     name: accounts:account_settings
     URL: /accounts/settings/
     """
-    return render(request, 'account_settings.html', {"user": request.user})
+    return render(request, 'account_settings.html')
 
 
 @login_required

@@ -15,34 +15,34 @@ Dane ucznia
 {% block content %}
 <section>
 	<h1>
-	{{ user.username }}
+	{{ view_user.username }}
 	</h1>
 	<p>
 		<span class="field-label">Imię:</span> 
-		{% if user.first_name %}
-			{{ user.first_name }}
+		{% if view_user.first_name %}
+			{{ view_user.first_name }}
 		{% else %}
 			[brak]
 		{% endif %}
 	</p>
 	<p>
 		<span class="field-label">Nazwisko:</span> 
-		{% if user.last_name %}
-			{{ user.last_name }}
+		{% if view_user.last_name %}
+			{{ view_user.last_name }}
 		{% else %}
 			[brak]
 		{% endif %}
 	</p>
 	<p>
 		<span class="field-label">Adres Email:</span> 
-		{% if user.email %}
-			{{ user.email }}
+		{% if view_user.email %}
+			{{ view_user.email }}
 		{% else %}
 			[brak]
 		{% endif %}
 	</p>
 	<p>
-		<span class="field-label">Wynik:</span> {{ user.student.rating }}
+		<span class="field-label">Wynik:</span> {{ view_user.student.rating }}
 	</p>
 </section>
 {% endblock %}

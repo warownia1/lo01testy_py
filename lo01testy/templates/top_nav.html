@@ -23,6 +23,11 @@
 		</svg>
 	</a>
 	</li>
+	{% if user.is_staff %}
+	<li>
+	<a href="{% url 'admin:index' %}">Admin</a>
+	</li>
+	{% endif %}
 	<li>
 	<a href="{% url 'accounts:logout' %}">
 		<svg class="menu-icon logout-icon" viewBox="-50,-50 100,100">
@@ -31,10 +36,5 @@
 		</svg>
 	</a>
 	</li>
-	{% if user.is_staff %}
-	<li>
-	<a href="{% url 'admin:index' %}">Admin</a>
-	</li>
-	{% endif %}
 	</ul>
 </nav>

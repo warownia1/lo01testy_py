@@ -34,16 +34,20 @@ class MyUserAdmin(UserAdmin):
 
 # Very ugly solution, shame on you!
 def user_str(self):
+    if hasattr(self, 'student'):
+        code = self.student.code
+    else:
+        code = None
     if self.last_name and self.first_name:
         return "{}:{}:{} {}".format(
-            self.student.code, self.username, self.last_name, self.first_name
+            code, self.username, self.last_name, self.first_name
         )
     elif self.last_name:
         return "{}:{}:{}".format(
-            self.student.code, self.username, self.last_name
+            code, self.username, self.last_name
         )
     else:
-        return "{}:{}".format(self.student.code, self.username)
+        return "{}:{}".format(code, self.username)
 User.__str__ = user_str
 
 

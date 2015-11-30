@@ -298,7 +298,7 @@ class ExamUpload:
         return DataRow(
             question=Question(text=question, type=type, rating=rating),
             answers=[
-                Answer(text=ans[0], is_correct=ans[1]) for ans in answers
+                Answer(text=ans[0], is_correct=int(ans[1])) for ans in answers
             ]
         )
 

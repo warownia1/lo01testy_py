@@ -160,7 +160,8 @@ def question(request):
                 request.session['exam']['finished'] = True
                 ef = ExamFinalizer(
                     request.user, exam['id'], exam['questions'],
-                    request.session['exam']['answers'], exam['practise'])
+                    request.session['exam']['answers'], exam['practise']
+                )
                 ef.save_exam()
                 rating_change = ef.adjust_rating()
 

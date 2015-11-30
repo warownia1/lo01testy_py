@@ -94,7 +94,7 @@ class Answer(models.Model):
             return "Q{}: {}".format(self.question_id, self.text)
 
 
-class ExamRegister(models.Model):
+class ExamLog(models.Model):
     """Collection of all exams already taken by students."""
     user = models.ForeignKey(User)
     exam = models.ForeignKey(Exam)
@@ -105,16 +105,23 @@ class ExamRegister(models.Model):
 
     def __str__(self):
         return "{} - {} - {}".format(
-            self.date, self.exam.name, self.user.username)
+            self.date, self.exam.name, self.user.username
+        )
+
+    class Meta:
+        verbose_name_plural = 'exams log'
 
 
 # this model is storing students' answers
 # it's user in open-ended questions rather than single/multiple choice
-class AnswerRegister(models.Model):
+class AnswerLog(models.Model):
     """Collection of answers given by students during exams"""
-    exam_attempt = models.ForeignKey(ExamRegister)
+    exam_log = models.ForeignKey(ExamLog)
     question = models.ForeignKey(Question)
     # answer contains a json object with student's answer
     answer = models.CharField(max_length=25)
     # whether questions was already graded
     graded = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name_plural = 'answers log'

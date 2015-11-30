@@ -6,7 +6,7 @@ from random import random
 from itertools import count
 from collections import namedtuple
 
-from .models import Exam, Question, Answer, ExamRegister, AnswerRegister
+from .models import Exam, Question, Answer, ExamLog, AnswerLog
 from .enums import QuestionType
 
 
@@ -120,7 +120,7 @@ class ScoreCalculator:
         correct_answer_ids = set([ans.id for ans in correct_answers])
         if question.type == QuestionType.single_choice:
             answer_id = int(answer)
-            return answer_id in correct_answer_ids
+            return int(answer_id in correct_answer_ids)
 
         elif question.type == QuestionType.multiple_choice:
             answer_ids = set(map(int, answer))
@@ -147,7 +147,8 @@ class ScoreCalculator:
         """
         A = self.REF_SCORE / (1 - self.REF_SCORE)
         diff = question_rating - user_rating
-        return round(A / (A + math.exp(self.STEEP * diff)), 6)
+        expected_score = A / (A + math.exp(self.STEEP * diff))
+        return round(expected_score, 6)
 
     def get_rating_change(self, score, expected_score):
         """Returns the amount of ratig points for the answer"""
@@ -190,7 +191,7 @@ class ExamFinalizer:
 
     def save_exam(self):
         """Saves the answers and the exam log into the database"""
-        exam_register = ExamRegister(
+        exam_register = ExamLog(
             user=self.user,
             exam_id=self.exam_id,
             user_rating=self.user.student.rating
@@ -200,7 +201,7 @@ class ExamFinalizer:
             answer = self.parse_answer(
                 raw_answer['question_type'], raw_answer['answer']
             )
-            AnswerRegister(
+            AnswerLog(
                 exam_attempt=exam_register,
                 question_id=int(raw_answer['question_id']),
                 answer=answer,
@@ -272,9 +273,7 @@ class ExamUpload:
             next(reader)
         self.data = []
         for row in reader:
-            print(row)
             data = self.validate_row(row)
-            print(data)
             self.data.append(data)
 
     def validate_row(self, row):

@@ -7,7 +7,8 @@ from django.http import HttpResponse
 from django.conf.urls import url
 from django.shortcuts import render, redirect
 
-from .models import *
+from .models import Exam, Group, Assign, ExamCode, Question, Answer, \
+                    ExamLog, AnswerLog
 from .forms import UploadExamFileForm
 from .utils import ExamUpload
 
@@ -58,7 +59,9 @@ class ExamAdmin(admin.ModelAdmin):
                 exam_name = form.cleaned_data['exam_name']
                 num_questions = form.cleaned_data['num_questions']
                 file = request.FILES['file']
-                text_file = TextIOWrapper(file.file, newline='')
+                text_file = TextIOWrapper(
+                    file.file, encoding=request.encoding, newline=''
+                )
                 has_headers = form.cleaned_data['has_headers']
                 exam_upload = ExamUpload(exam_name, num_questions)
                 exam_upload.read_file(text_file, request.encoding, has_headers)
@@ -95,14 +98,14 @@ class QuestionAdmin(admin.ModelAdmin):
     inlines = (AnswerInline,)
 
 
-class AnswerRegisterInline(admin.TabularInline):
-    model = AnswerRegister
+class AnswerLogInline(admin.TabularInline):
+    model = AnswerLog
     extra = 0
-    readonly_fields = ('exam_attempt', 'question', 'answer', 'graded')
+    readonly_fields = ('exam_log', 'question', 'answer', 'graded')
 
 
-class ExamRegisterAdmin(admin.ModelAdmin):
-    inlines = (AnswerRegisterInline, )
+class ExamLogAdmin(admin.ModelAdmin):
+    inlines = (AnswerLogInline, )
     readonly_fields = ('user', 'exam', 'date', 'user_rating')
     list_filter = ('exam', 'date')
 
@@ -110,4 +113,4 @@ class ExamRegisterAdmin(admin.ModelAdmin):
 admin.site.register(Exam, ExamAdmin)
 admin.site.register(Group, GroupAdmin)
 admin.site.register(Question, QuestionAdmin)
-admin.site.register(ExamRegister, ExamRegisterAdmin)
+admin.site.register(ExamLog, ExamLogAdmin)

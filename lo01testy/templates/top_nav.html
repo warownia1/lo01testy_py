@@ -1,13 +1,13 @@
 <nav class="top-nav">
 	<ul>
 	<li>
-	<a href="{% url 'accounts:user_profile' %}">Home</a>
+	<a href="{% url 'accounts:profile' %}" title="strona główna">Home</a>
 	</li>
 	<li>
-	<a href="{% url 'exam:list' %}">Testy</a>
+	<a href="{% url 'exam:list' %}" title="lista testów">Testy</a>
 	</li>
 	<li>
-	<a href="{% url 'accounts:settings' %}">
+	<a href="{% url 'accounts:settings' %}" title="ustawienia konta">
 		<svg class="menu-icon gear-icon" viewBox="-55 -55 110 110">
 			<circle r="23" cx="0" cy="0"/>
 			<path d="M-10,-30 v-10 a40,40 0 0 1 20,0 v10 z" />
@@ -25,11 +25,11 @@
 	</li>
 	{% if user.is_staff %}
 	<li>
-	<a href="{% url 'admin:index' %}">Admin</a>
+	<a href="{% url 'admin:index' %}" title="administracja">Admin</a>
 	</li>
 	{% endif %}
 	<li>
-	<a href="{% url 'accounts:logout' %}">
+	<a href="{% url 'accounts:logout' %}" title="wyloguj">
 		<svg class="menu-icon logout-icon" viewBox="-50,-50 100,100">
 			<path d="M 20,15 a 30,30 0 1 1 0,-30" /> 
 			<path d="M 0,0 h 35" />

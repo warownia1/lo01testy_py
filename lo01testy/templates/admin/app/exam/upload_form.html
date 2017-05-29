@@ -17,13 +17,13 @@ app-examination model-exam change-form
 {% block breadcrumbs %}
 	<div class="breadcrumbs">
 	<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-	&rsaquo; <a href="{% url 'admin:app_list' app_label='examination' %}">Examination</a>
+	&rsaquo; <a href="{% url 'admin:app_list' app_label='app' %}">App</a>
 	&rsaquo; {% if has_change_permission %}
-	<a href="{% url 'admin:examination_exam_changelist' %}">Exams</a>
+	<a href="{% url 'admin:app_exam_changelist' %}">Exams</a>
 	{% else %}
 	Exams
 	{% endif %}
-	&rsaquo; {% trans 'Add' %} Exam
+	&rsaquo; {% trans 'Upload' %} Exam
 	</div>
 {% endblock %}
 

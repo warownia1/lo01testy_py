@@ -25,7 +25,7 @@ Ustawienia Konta
 		{% else %}
 			[brak]
 		{% endif %}
-		<br \>
+		<br />
 		<a href="{% url 'accounts:change_email' %}">
 			zmień adres email
 		</a>
@@ -47,14 +47,14 @@ Ustawienia Konta
 		{% else %}
 			[brak]
 		{% endif %}
-		<br \>
+		<br />
 		<span class="span-1">Nazwisko:</span>
 		{% if user.last_name %}
 			{{ user.last_name }}
 		{% else %}
 			[brak]
 		{% endif %}
-		<br \>
+		<br />
 		<a href="{% url 'accounts:change_personal' %}">
 			zmień dane osobowe
 		</a>

@@ -13,13 +13,9 @@
 		<h1 class="login-header">
 		Logowanie
 		</h1>
-		{% if next %}
-		<form action="{% url 'accounts:login' %}?next={{ next }}"
+		<form {% if next %}action="{% url 'accounts:login' %}?next={{ next }}"
+			  {% else %}action="{% url 'accounts:login' %}"{% endif %}
 			  method='POST'>
-		{% else %}
-		<form action="{% url 'accounts:login' %}"
-			  method='POST'>
-		{% endif %}
 			{% csrf_token %}
 			{% for field in form %}
 			<div class="field-wrapper">

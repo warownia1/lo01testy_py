@@ -18,7 +18,7 @@ Lista Testów
 	</h1>
 	{% for exam in exams %}
 		<p>
-		<a href="{% url 'exam:overview' exam.id %}">
+		<a href="{% url 'exam:info' exam.id %}">
 		{{ exam.name }} &ndash; {{ exam.closest_due_date|date:"d E Y" }}
 		</a>
 		</p>

@@ -8,13 +8,13 @@
 {% endblock %}
 
 {% block header %}
-{{ exam.name }}
+{{ exam_name }}
 {% endblock %}
 
 {% block content %}
 <section>
 	<h1>
-	Pytanie {{ exam.current_question|add:'1' }}/{{ exam.num_questions }}
+	Pytanie {{ question_no|add:'1' }}/{{ num_questions }}
 	</h1>
 	<p>
 	{{ question.text }}

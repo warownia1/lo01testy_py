@@ -1,5 +1,7 @@
 from io import TextIOWrapper
 
+import bulk_admin
+from bulk_admin.admin import TabularBulkInlineModelAdmin
 from django.conf.urls import url
 from django.contrib import admin, messages
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
@@ -48,11 +50,18 @@ def user_str(self):
         )
     else:
         return "{}:{}".format(code, self.username)
+
+
 User.__str__ = user_str
 
 
-class RegistrationCodeAdmin(admin.ModelAdmin):
-    list_display = ('code', 'used')
+class RegistrationCodeBulkInlineModelAdmin(TabularBulkInlineModelAdmin):
+    def get_formset(self, request, obj=None, **kwargs):
+        return super().get_formset(request, obj=obj, extra=30, **kwargs)
+
+
+class RegistrationCodeAdmin(bulk_admin.BulkModelAdmin):
+    bulk_inline = RegistrationCodeBulkInlineModelAdmin
 
 
 admin.site.unregister(DjangoGroup)
